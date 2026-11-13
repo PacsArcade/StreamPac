@@ -1,64 +1,81 @@
+// Draft for the Admiral's review, not legal advice.
+import {
+  APP_DOMAIN,
+  CONTACT_EMAIL_PLACEHOLDER,
+  HOSTED_SERVICE_NAME,
+  HOSTED_SERVICE_PRIVACY_URL,
+  HOSTED_SERVICE_TOS_URL,
+} from "@/brand"
+
 export function PrivacyPage() {
   return (
     <div className="flex flex-col gap-6 grow w-full max-w-[72ch] mx-auto px-4 py-6">
       <h1>Privacy Policy</h1>
-      <h2>Applies to the zap.stream website and the zap.stream mobile apps</h2>
+      <h2>For {APP_DOMAIN}</h2>
       <p>
-        <strong>Effective Date:</strong> 2026-11-12
-      </p>
-      <p>
-        zap.stream shows live streams and chat that people publish on Nostr, an open protocol. This page explains what
-        the website and the apps keep, and what they do not.
+        This site shows live streams and chat that people publish on Nostr, an open protocol. This page says what the
+        site keeps and what it does not.
       </p>
       <ul className="list-disc pl-6 flex flex-col gap-3">
         <li>
-          <b>Your keys:</b> Your Nostr private key (nsec) stays on your device. The apps never send it to us. If you
-          log in with a signer app such as Amber or a remote signer, the key stays in that signer.
+          <b>No tracking:</b> We run no analytics, no advertising and no tracking scripts on this site. We do not sell
+          your data.
         </li>
         <li>
-          <b>What you publish:</b> Your profile, chat messages, reactions, zaps, follows, mute lists, reports and
-          stream details are Nostr events. They are sent to the Nostr relays you use and are public by design. Relays
-          and other apps can keep copies. We do not control third party relays.
+          <b>Your login:</b> You can log in with a Nostr browser extension or by pasting a private key (nsec). With an
+          extension, the key stays in the extension. If you paste a key, this site saves it in your browser's local
+          storage on your own device so you stay logged in. It is not sent to us. Logging out removes it.
         </li>
         <li>
-          <b>What we store:</b> We do not keep an account database of the people who only watch. The zap.stream
-          streaming API stores the details needed to run a stream for people who go live: the public key, stream key,
-          title, summary, tags, balance and payment records.
+          <b>What the site stores in your browser:</b> your login session (public key, login type, your lists and the
+          wallet connection if you added one), your language, the streaming provider you picked, whether you accepted
+          the content warning, player settings, a short memory of video links that did not load, a draft upload, sign-in tokens for chat services you connect, and a
+          local copy of Nostr events so pages load faster. It all stays on your device. Clearing your browser data
+          removes it.
         </li>
         <li>
-          <b>Payments:</b> Zaps are tips sent over the Lightning network from your own wallet. We do not see your
-          wallet or your wallet credentials. A Nostr Wallet Connect string you paste in is stored on your device only.
+          <b>What you publish:</b> Streams, chat messages, reactions, zaps, profile and follows are Nostr events signed
+          by your key and sent to public relays. They are public by design. Relays and other apps can keep copies, and
+          we do not control them, so we cannot delete what they keep.
         </li>
         <li>
-          <b>No tracking:</b> The apps have no advertising and no analytics. We do not sell data and we do not share
-          data with third parties for their own use.
+          <b>Video hosting:</b> For now, live video goes through the streaming service run by {HOSTED_SERVICE_NAME}. If
+          you stream through it, it stores what it needs to run your stream (for example your public key, stream key,
+          title and payment records), under its own{" "}
+          <a
+            className="text-primary underline"
+            href={HOSTED_SERVICE_PRIVACY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            privacy policy
+          </a>{" "}
+          and{" "}
+          <a className="text-primary underline" href={HOSTED_SERVICE_TOS_URL} target="_blank" rel="noopener noreferrer">
+            terms
+          </a>
+          . Go live alerts you turn on are also registered with that service.
         </li>
         <li>
-          <b>Device data:</b> The apps store settings on your device: your language, the accounts you added, your
-          follow and mute lists cache, and go live alert choices. Go live alerts are checked on your device against
-          your relays.
+          <b>Payments:</b> Zaps are Lightning payments sent from your wallet to the streamer's wallet. We do not hold
+          funds and do not see your wallet. A wallet connection string that you add is saved in your browser only.
         </li>
         <li>
-          <b>Network traffic:</b> Servers you connect to (relays, our API, image and video hosts) see your IP address
-          like any web server does. Connections use https or wss.
+          <b>Other servers you reach:</b> Your browser connects to Nostr relays, the streaming service, and image and
+          video hosts. Like any web server, they see your IP address. Some small helpers still point at third party
+          hosts, for example a fallback avatar picture service and a proxy for YouTube chat.
         </li>
         <li>
-          <b>Reports and moderation:</b> A report is published to relays as a Nostr event and reviewed by the zap.stream
-          team. You can block users and hide streams marked with a content warning in the app.
+          <b>Children:</b> This site is not directed at children under 13.
         </li>
         <li>
-          <b>Children:</b> zap.stream is not directed at children under 13.
+          <b>Deleting your data:</b> See <a className="text-primary underline" href="/delete-account">how deletion works</a>.
         </li>
         <li>
-          <b>Deleting your data:</b> See <a className="text-primary underline" href="/delete-account">how to delete your account</a>.
-        </li>
-        <li>
-          <b>Changes:</b> We may update this policy and will change the effective date when we do.
+          <b>Changes:</b> We may update this policy.
         </li>
       </ul>
-      <p>
-        Questions about privacy: <a className="text-primary underline" href="mailto:info@zap.stream">info@zap.stream</a>
-      </p>
+      <p>Questions about privacy: {CONTACT_EMAIL_PLACEHOLDER}</p>
     </div>
   )
 }

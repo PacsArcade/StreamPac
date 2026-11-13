@@ -118,7 +118,7 @@ function ForwardingTab({
   return (
     <div className="flex flex-col gap-5">
       <p className="text-sm text-layer-5">
-        <FormattedMessage defaultMessage="Send your stream to Twitch, YouTube and other platforms at the same time as zap.stream." />
+        <FormattedMessage defaultMessage="Send your stream to Twitch, YouTube and other platforms at the same time as Pac's Arcade Stream." />
       </p>
       {forwards.length > 0 && (
         <ModalSection title={<FormattedMessage defaultMessage="Sending to" />}>

@@ -8,7 +8,7 @@ export function CatchAllRoutePage() {
   return (
     <>
       <Helmet>
-        <title>Not found - zap.stream</title>
+        <title>Not found - Pac's Arcade Stream</title>
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       <div className="flex flex-col items-start gap-3 p-4 sm:px-8 sm:py-16 max-w-[560px]">

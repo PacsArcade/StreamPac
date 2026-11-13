@@ -23,8 +23,7 @@ export function ShareMenu({ ev }: { ev: NostrEvent }) {
 
   const defaultMyMsg = formatMessage(
     {
-      defaultMessage: "Come check out my stream on zap.stream!\n\n{link}\n\n",
-      id: "HsgeUk",
+      defaultMessage: "Come check out my stream on Pac's Arcade Stream!\n\n{link}\n\n",
     },
     {
       link: `https://${window.location.host}/${NostrLink.fromEvent(ev).encode()}`,
@@ -32,8 +31,7 @@ export function ShareMenu({ ev }: { ev: NostrEvent }) {
   )
   const defaultHostMsg = formatMessage(
     {
-      defaultMessage: "Come check out {name} stream on zap.stream!\n\n{link}",
-      id: "PUymyQ",
+      defaultMessage: "Come check out {name} stream on Pac's Arcade Stream!\n\n{link}",
     },
     {
       name: `nostr:${new NostrLink(NostrPrefix.PublicKey, host ?? ev.pubkey).encode()}`,

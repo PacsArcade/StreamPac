@@ -1,56 +1,61 @@
+// Draft for the Admiral's review, not legal advice.
+import { APP_DOMAIN, APP_NAME, CONTACT_EMAIL_PLACEHOLDER, HOSTED_SERVICE_NAME, HOSTED_SERVICE_TOS_URL } from "@/brand"
+
 export function TosPage() {
   return (
     <div className="flex flex-col gap-6 grow w-full max-w-[72ch] mx-auto px-4 py-6">
       <h1>Terms of Service</h1>
-      <h2>Applies to zap.stream provided streaming providers</h2>
+      <h2>For {APP_DOMAIN}</h2>
       <p>
-        <strong>Effective Date:</strong> 2023-07-06
-      </p>
-      <p>
-        Welcome to zap.stream! By using our streaming service, you agree to the following Terms of Service ("Terms").
-        Please read them carefully.
+        {APP_NAME} ({APP_DOMAIN}) is a website run by Pac's Arcade. It is a frontend: it shows live streams and videos
+        that people publish on Nostr, an open protocol, and lets you watch, chat and send zaps. By using the site you
+        agree to these terms.
       </p>
       <ul className="list-disc pl-6 flex flex-col gap-3">
         <li>
-          <b>User Accounts:</b> You are responsible for maintaining the security of your account and any activities that
-          occur under it.
+          <b>Your keys are yours:</b> Your account is a Nostr key pair. You are responsible for keeping your private
+          key safe. We cannot reset it or recover it for you.
         </li>
         <li>
-          <b>User Conduct:</b> You agree not to violate any laws, infringe upon others' rights, or engage in fraudulent
-          or harmful activities while using our service.
+          <b>What you publish is public:</b> A stream is a Nostr event signed by your own key and sent to public relays.
+          Chat, zaps and reactions work the same way. Relays and other apps may keep copies, so we cannot delete what
+          they keep.
         </li>
         <li>
-          <b>Prohibited Content:</b> You may not stream or upload copyrighted content unless you have obtained the
-          necessary rights or permissions.
+          <b>Your conduct:</b> Do not break the law, infringe other people's rights or use the site for fraud or harm.
+          Do not stream or upload content you have no right to share.
         </li>
         <li>
-          <b>Termination:</b> We reserve the right to suspend or terminate your access to the service if you violate
-          these Terms.
+          <b>Video hosting:</b> For now, live video goes through the streaming service run by {HOSTED_SERVICE_NAME}, not
+          by us. If you stream through it, the{" "}
+          <a className="text-primary underline" href={HOSTED_SERVICE_TOS_URL} target="_blank" rel="noopener noreferrer">
+            {HOSTED_SERVICE_NAME} terms
+          </a>{" "}
+          also apply to you, and they may differ from these.
         </li>
         <li>
-          <b>Disclaimer:</b> The zap.stream service is provided "as is" without any warranties.
+          <b>Payments:</b> Zaps are Lightning payments sent from your wallet to the streamer's wallet. We do not hold,
+          process or return funds, and a sent payment cannot be taken back by us.
         </li>
         <li>
-          <b>Limitation of Liability:</b> We shall not be liable for any damages arising from your use of the service.
+          <b>What we can do:</b> We may stop showing streams on this site if they break these terms. We cannot remove
+          events from relays we do not run.
         </li>
         <li>
-          <b>Governing Law:</b> These Terms shall be governed by and construed in accordance with the applicable local
-          laws, regulations, and jurisdiction where the service is accessed and used.
+          <b>No warranty:</b> The site is provided "as is", without promises that it will be available or error free.
         </li>
         <li>
-          <b>Modifications:</b> We may update these Terms from time to time, and your continued use of the service
-          constitutes acceptance of the modified Terms.
+          <b>Limit of liability:</b> To the extent the law allows, we are not liable for damages from your use of the
+          site, the relays, the streaming service or the Lightning network.
         </li>
         <li>
-          <b>Entire Agreement:</b> These Terms constitute the entire agreement between you and zap.stream.
+          <b>Changes:</b> We may change these terms. Using the site after a change means you accept it.
+        </li>
+        <li>
+          <b>Open source credit:</b> This site is built on the open source zap.stream frontend (MIT license).
         </li>
       </ul>
-      <p>
-        If you have any questions or concerns, please contact us at <a className="text-primary underline" href="mailto:info@zap.stream">info@zap.stream</a>
-        .
-      </p>
-      <p>By using zap.stream, you agree to abide by these Terms of Service.</p>
-      <p>Enjoy your streaming experience!</p>
+      <p>Questions: {CONTACT_EMAIL_PLACEHOLDER}</p>
     </div>
   )
 }

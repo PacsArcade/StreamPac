@@ -44,14 +44,14 @@ export default function DashboardIntro() {
   return (
     <div className="flex flex-col gap-4 mx-auto my-4 sm:my-8 w-[calc(100%-2rem)] max-w-[640px] bg-layer-1 rounded-2xl border border-layer-3 p-6">
       <h1>
-        <FormattedMessage defaultMessage="Welcome to zap.stream!" />
+        <FormattedMessage defaultMessage="Welcome to Pac's Arcade Stream!" />
       </h1>
       <div className="flex gap-4">
         <div>
           <ZapGlow />
         </div>
         <p className="text-layer-5">
-          <FormattedMessage defaultMessage="ZapStream is a new kind of streaming platform that allows you to earn bitcoin (sats) the moment you start streaming! Viewers can tip streamers any amount they choose. The tips are instantly deposited to your bitcoin (lightning) wallet. zap.stream never touches your earnings!" />
+          <FormattedMessage defaultMessage="Pac's Arcade Stream is a new kind of streaming platform that allows you to earn bitcoin (sats) the moment you start streaming! Viewers can tip streamers any amount they choose. The tips are instantly deposited to your bitcoin (lightning) wallet. We never touch your earnings!" />
         </p>
       </div>
       <h3>

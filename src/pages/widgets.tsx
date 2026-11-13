@@ -86,7 +86,7 @@ function ChatWidgetCard({ npub, baseUrl }: { npub: string; baseUrl: string }) {
   return (
     <DashboardCard title={<FormattedMessage defaultMessage="Chat" />}>
       <p className="text-sm text-layer-5">
-        <FormattedMessage defaultMessage="Your zap.stream chat, merged with any accounts you link below." />
+        <FormattedMessage defaultMessage="Your Pac's Arcade Stream chat, merged with any accounts you link below." />
       </p>
       <CopyField value={`${baseUrl}/chat/${npub}#${chatParams}`} secret={true} />
       <p className="text-sm text-warning">

@@ -14,7 +14,9 @@ A thin rebrand of [v0l/zap.stream](https://github.com/v0l/zap.stream) (MIT, (c) 
 | Google Tag Manager removed | script tags gone from `index.html`; `gtag` conversion call removed from `login-signup.tsx`; `src/gtm.ts` is now unreferenced (left on disk) |
 | Plausible-style analytics off | `trackEvent` in `src/utils.ts` no longer POSTs to pa.v0l.io |
 
-Not done in this pass: logos (`public/logo*.png`, `zap-stream.svg`, `Logo` component are still upstream's, replace with ours), legal pages (`tos.tsx`, `privacy.tsx`, `faq.md`, translations still say zap.stream), NIP-05 domain default (still `zap.stream`, set `VITE_NIP5_DOMAIN` when we serve our own `/.well-known/nostr.json`), `@zap_stream` twitter handle in `ssr.json`.
+Second pass (logo, legal, notch scope): our pixel pac mark replaces the Logo component, `layout.css` watermark, manifest, favicon links, OG image and service worker icon (`public/pacsarcade-mark.svg` + `pacsarcade-logo-*.png`, rendered with rsvg-convert from the brand-assets tricolor pac; upstream `logo*.png`, `favicon.png`, `zap-stream.svg` stay on disk, unreferenced). The notch is now only on stream/video tile thumbnails (class `pa-notch`). `tos.tsx`, `privacy.tsx`, `delete-account.tsx`, `faq.md` are rewritten as drafts for review (code comment on each); `/faq` now renders the bundled `faq.md` instead of upstream's nostr note. Placeholders in `brand.ts`: `CONTACT_EMAIL_PLACEHOLDER`, `TWITTER_HANDLE_PLACEHOLDER`. Dev-only card fixture at `/dev-cards` (vite dev server only, `import.meta.env.DEV`). The provider name in `DEFAULT_CONFIG` stays "zap.stream" on purpose (it is the hosted service). The "Get the zap.stream app" download page is left (those are upstream's mobile apps).
+
+Still not done: NIP-05 domain default (still `zap.stream`, set `VITE_NIP5_DOMAIN` when we serve our own `/.well-known/nostr.json`), a real contact address and Twitter handle, other locale files still carry old zap.stream strings (en is regenerated).
 
 ## Build
 Package manager is bun (`bun.lock`).

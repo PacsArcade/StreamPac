@@ -218,6 +218,9 @@
   "AYIR/J": {
     "defaultMessage": "Remove Image"
   },
+  "Af6DSw": {
+    "defaultMessage": "Welcome to {name}"
+  },
   "Atr2p4": {
     "defaultMessage": "NSFW Content"
   },
@@ -248,9 +251,6 @@
   "BHNL+v": {
     "defaultMessage": "Raw Data:"
   },
-  "BJjJiw": {
-    "defaultMessage": "Send your stream to Twitch, YouTube and other platforms at the same time as zap.stream."
-  },
   "Bd1yEX": {
     "defaultMessage": "New Stream Goal"
   },
@@ -271,6 +271,9 @@
   },
   "CJ2DC3": {
     "defaultMessage": "Nobody live"
+  },
+  "CrBPnn": {
+    "defaultMessage": "Come check out my stream on Pac's Arcade Stream! {link}"
   },
   "CsCUYo": {
     "defaultMessage": "{n} sats"
@@ -311,9 +314,6 @@
   "FXepR9": {
     "defaultMessage": "{m}mo {ago}",
     "description": "Number of month(s) relative to now"
-  },
-  "Fi8iM8": {
-    "defaultMessage": "Welcome to zap.stream"
   },
   "FjDlus": {
     "defaultMessage": "You can always replace it with your own address later."
@@ -372,9 +372,6 @@
   "HRJj4L": {
     "defaultMessage": "Read zap messages aloud"
   },
-  "HsgeUk": {
-    "defaultMessage": "Come check out my stream on zap.stream! {link}"
-  },
   "Ht231k": {
     "defaultMessage": "Forwarding"
   },
@@ -407,6 +404,9 @@
   },
   "IvjoDS": {
     "defaultMessage": "Connected"
+  },
+  "IwuSbE": {
+    "defaultMessage": "Your Pac's Arcade Stream chat, merged with any accounts you link below."
   },
   "J+dIsA": {
     "defaultMessage": "Subscriptions"
@@ -447,9 +447,6 @@
   "LfTOMb": {
     "defaultMessage": "Zaps from viewers will show up here."
   },
-  "Lg2ye2": {
-    "defaultMessage": "ZapStream is a new kind of streaming platform that allows you to earn bitcoin (sats) the moment you start streaming! Viewers can tip streamers any amount they choose. The tips are instantly deposited to your bitcoin (lightning) wallet. zap.stream never touches your earnings!"
-  },
   "LxSJOb": {
     "defaultMessage": "Go to Dashboard"
   },
@@ -483,6 +480,9 @@
   "NnHu0L": {
     "defaultMessage": "Please upload at least 1 video"
   },
+  "NsthAi": {
+    "defaultMessage": "Send your stream to Twitch, YouTube and other platforms at the same time as Pac's Arcade Stream."
+  },
   "Ntjkqd": {
     "defaultMessage": "or"
   },
@@ -491,6 +491,9 @@
   },
   "O7AeYh": {
     "defaultMessage": "Description.."
+  },
+  "ODe52U": {
+    "defaultMessage": "Welcome to Pac's Arcade Stream!"
   },
   "OEW7yJ": {
     "defaultMessage": "Zaps"
@@ -503,9 +506,6 @@
   },
   "OadZli": {
     "defaultMessage": "Manage Servers"
-  },
-  "Ol546K": {
-    "defaultMessage": "Your zap.stream chat, merged with any accounts you link below."
   },
   "OnllN2": {
     "defaultMessage": "Choose your preferred streaming provider. Each provider may have different pricing, features, and terms of service."
@@ -526,9 +526,6 @@
   },
   "PHE60k": {
     "defaultMessage": "Leave blank if you do not wish to set up any goals."
-  },
-  "PUymyQ": {
-    "defaultMessage": "Come check out {name} stream on zap.stream! {link}"
   },
   "PXAur5": {
     "defaultMessage": "Withdraw"
@@ -624,9 +621,6 @@
     "defaultMessage": "ago",
     "description": "Relative time, ie. 1s ago"
   },
-  "UGFYV8": {
-    "defaultMessage": "Welcome to zap.stream!"
-  },
   "UHCHBJ": {
     "defaultMessage": "Load provider info"
   },
@@ -650,6 +644,9 @@
   },
   "VThwOz": {
     "defaultMessage": "sats"
+  },
+  "VkM1nN": {
+    "defaultMessage": "Pac's Arcade Stream is a new kind of streaming platform that allows you to earn bitcoin (sats) the moment you start streaming! Viewers can tip streamers any amount they choose. The tips are instantly deposited to your bitcoin (lightning) wallet. We never touch your earnings!"
   },
   "W+xeab": {
     "defaultMessage": "{d}d {h}h {m}m"
@@ -1132,6 +1129,9 @@
   },
   "qj1uhz": {
     "defaultMessage": "Disconnect"
+  },
+  "qnGLRt": {
+    "defaultMessage": "Come check out {name} stream on Pac's Arcade Stream! {link}"
   },
   "qx6bv2": {
     "defaultMessage": "Stream Goal (optional)"

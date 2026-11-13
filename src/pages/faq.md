@@ -1,40 +1,51 @@
-## How do i stream on zap.stream?
+## How do I stream here?
 
-To start streaming on zap.stream, follow these steps:
-
-1. Click on Log In
-2. Create a new account if you don't have one already.
-   If you already have an account, you can use a nostr extension to log in. If you already use a nostr extension, you will be automatically logged in. If you don't have a nostr extension set up, you can use nos2x or Alby.
-3. Click the “Stream” button in the top right corner
-4. Here you have a few options, using our in-house hosting, or your own (such as Cloudflare).
-   1. For manual hosting all you need is the HLS URL for the Stream URL field. You should be able to find this in your hosting setup.
-   2. If you use our in-house zap.stream hosting (cheapest and easiest), copy your stream URL and Stream Key to your OBS settings and you should be good to go.
+1. Click Log In. Use a Nostr browser extension, or paste a private key (less safe), or make a new key.
+2. Click the Stream button at the top right.
+3. Pick a streaming provider. For now the default is the zap.stream hosted service, and its terms apply when you stream through it. You can also use your own HLS stream URL.
+4. Copy the stream URL and stream key into OBS and start streaming.
 
 ## What is OBS?
 
-OBS (Open Broadcaster Software) is a free and open source software for video recording and live streaming on Windows, Mac and Linux. It is a popular choice with streamers. You'll need to install this to capture your video, audio and anything else you'd like to add to your stream. Once installed and configured to preference, add your Stream URL and Stream Key from the Stream settings to OBS to form a connection with zap.stream.
+OBS (Open Broadcaster Software) is free, open source software for recording and live streaming on Windows, Mac and Linux. Install it, then paste your stream URL and stream key into its Stream settings.
 
 ## What does it cost to stream?
 
-Each streaming provider has their own pricing modesl, please see [the providers page](https://zap.stream/providers) for more info
+Each streaming provider sets its own prices. See [the providers page](/providers).
+
+## What is Nostr?
+
+Nostr is an open protocol. A stream here is a Nostr event (NIP-53) signed by the streamer's own key and sent to public relays. Pac's Arcade runs this website as one frontend for it. Other apps can show the same streams.
+
+## Who holds my account?
+
+You do. Your account is a key pair. We cannot reset or recover your key. Back it up.
+
+## Can you delete my stream or messages?
+
+Not from relays we do not run. A deletion request asks relays to drop an event, but relays may keep copies. See [deleting your data](/delete-account).
 
 ## What are sats?
 
-Sats are small units of Bitcoin. Sending sats on zap.stream is referred to as “zapping” or zaps.
-
-## How do i get more sats?
-
-We've put together a list of easy-to-use exchanges that will allow you to buy a small amount of bitcoin (sats) and to transfer them to your wallet of choice.
+Sats are small units of Bitcoin. Sending sats to a streamer here is called zapping.
 
 ## What are zaps?
 
-Zaps are lightning payments, which are published on nostr as receipts.
+Zaps are Lightning payments sent from your wallet to the streamer's wallet. They are published on Nostr as receipts. We do not hold the funds.
 
-## What is a nostr extension?
+## How do I get sats?
 
-A nostr extension simply saves your keys so you can safely log in without having to re-enter them every time. ZapStream uses the extension to authorize actions on your behalf without ever seeing your key information. This has a significant advantage over having to trust that websites handle your credentials safely.
+Use an exchange or wallet app you trust to buy a small amount of Bitcoin, then send it to a Lightning wallet.
 
-## Recommended Stream Settings
+## What is a Nostr extension?
+
+A browser extension that keeps your keys and signs actions for you, so sites never see your key. It is safer than pasting a private key into a website.
+
+## Do you track me?
+
+No. This site runs no analytics and no ads. See the [privacy policy](/privacy).
+
+## Recommended stream settings
 
 | Name              | Value |
 | ----------------- | ----- |
