@@ -23,6 +23,7 @@ import { VideosPage } from "./pages/videos"
 import { LinkHandler } from "./pages/link-handler"
 import { UploadPage } from "./pages/upload"
 import { DebugPage } from "./pages/debug"
+import { DevCardsPage } from "./pages/dev-cards"
 import { ShortsPage } from "./pages/shorts"
 import { DownloadAppPage } from "./pages/download"
 import ProvidersPage from "./pages/providers"
@@ -31,6 +32,7 @@ import { PrivacyPage } from "./pages/privacy"
 import { DeleteAccountPage } from "./pages/delete-account"
 import { FormattedMessage } from "react-intl"
 import type { RouteObject } from "react-router"
+import faqText from "./pages/faq.md?raw"
 import { RouteError } from "./pages/route-error"
 
 const DashboardPage = lazy(() => import("./pages/dashboard"))
@@ -48,6 +50,8 @@ export function makeRoutes(init: () => Promise<null>): RouteObject[] {
         path: "/debug",
         element: <DebugPage />,
       },
+      // dev-only card fixture, dropped from production builds
+      ...(import.meta.env.DEV ? [{ path: "/dev-cards", element: <DevCardsPage /> }] : []),
       {
         path: "/app",
         element: <DownloadAppPage />,
@@ -145,7 +149,7 @@ export function makeRoutes(init: () => Promise<null>): RouteObject[] {
       {
         path: "/faq",
         element: (
-          <MarkdownPage dTag="faq-en" title={<FormattedMessage defaultMessage="FAQ" description="Title: FAQ page" />} />
+          <MarkdownPage dTag="faq-en" content={faqText} title={<FormattedMessage defaultMessage="FAQ" description="Title: FAQ page" />} />
         ),
       },
       {

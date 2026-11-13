@@ -68,7 +68,7 @@ export function StreamTile({
         )}
         state={ev}
       >
-        <div className="h-inherit relative aspect-video bg-layer-1 rounded-xl overflow-hidden outline-2 outline-transparent group-hover:outline-layer-3 transition-[outline-color]">
+        <div className="pa-notch h-inherit relative aspect-video bg-layer-1 rounded-xl overflow-hidden outline-2 outline-transparent group-hover:outline-layer-3 transition-[outline-color]">
           {hasImg ? (
             <img
               loading="lazy"

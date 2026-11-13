@@ -59,7 +59,7 @@ export function VideoTile({
         )}
         state={ev}
       >
-        <div className="h-inherit relative aspect-video bg-layer-1 rounded-xl overflow-hidden">
+        <div className="pa-notch h-inherit relative aspect-video bg-layer-1 rounded-xl overflow-hidden">
           {hasImg ? (
             <img
               loading="lazy"

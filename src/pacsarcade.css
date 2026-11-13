@@ -26,10 +26,9 @@
   color-scheme: dark;
 }
 
-/* 8-bit notched corners (12/6 px steps), same polygon as frens.earth .r6-px8 */
-main div.bg-layer-1.rounded-xl,
-main div.bg-layer-1.rounded-2xl,
-main div.aspect-video.rounded-xl {
+/* 8-bit notched corners on stream/video thumbnails (12/6 px steps), same polygon as frens.earth .r6-px8 */
+/* Scoped to stream/video tile thumbnails (class pa-notch). Never inputs, buttons or the header. */
+.pa-notch {
   border-radius: 0;
   clip-path: polygon(
     0 12px, 6px 12px, 6px 6px, 12px 6px, 12px 0,
