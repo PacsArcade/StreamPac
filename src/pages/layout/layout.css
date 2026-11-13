@@ -18,7 +18,7 @@
 
 .age-check::after {
   content: " ";
-  background: url("/zap-stream.svg") no-repeat;
+  background: url("/pacsarcade-mark.svg") no-repeat;
   background-position: center;
   background-size: contain;
   position: absolute;

@@ -1,7 +1,7 @@
 {
   "site_name": "Pac's Arcade Stream",
   "description": "Nostr live streaming powered by Bitcoin lightning. Stream freely with Bitcoin payments, no censorship, open source.",
-  "default_image": "/logo.png",
+  "default_image": "/pacsarcade-logo-512.png",
   "public_url": "https://pacsarcade.stream",
   "relays": [
     "wss://relay.zap.stream",
@@ -128,7 +128,6 @@
     }
   ],
   "opengraph": {
-    "twitter_site": "@zap_stream",
     "player": "https://pacsarcade.stream/embed/{nevent}",
     "nip05_url": "https://api.snort.social/.well-known/nostr.json?name={name}",
     "nip05_headers": {
