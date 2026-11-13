@@ -4,6 +4,7 @@ import { useLogin } from "./login"
 import { ExternalStore } from "@snort/shared"
 import type { EventPublisher, NostrEvent } from "@snort/system"
 import { ZAP_STREAM_PUBKEY } from "@/const"
+import { STREAM_API_URL } from "@/brand"
 
 export interface StreamProviderConfig {
   name: string
@@ -18,7 +19,7 @@ export interface StreamProviderConfig {
 
 const DEFAULT_CONFIG: StreamProviderConfig = {
   name: "zap.stream",
-  url: "https://api-core.zap.stream/api/v1",
+  url: STREAM_API_URL,
   pubkey: ZAP_STREAM_PUBKEY,
   recommendations: [],
   score: 0,

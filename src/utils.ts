@@ -218,7 +218,8 @@ export function trackEvent(
   props?: Record<string, string | boolean>,
   e?: { destination?: { url: string } },
 ) {
-  if (!import.meta.env.DEV) {
+  // Pac's Arcade Stream: third-party analytics disabled (was a POST to pa.v0l.io).
+  if (false as boolean) {
     fetch("https://pa.v0l.io/api/event", {
       method: "POST",
       headers: {

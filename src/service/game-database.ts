@@ -18,7 +18,14 @@ export interface GameInfo {
   className?: string
 }
 
-export const GameDatabase = _GameDatabase
+import { STREAM_API_URL } from "@/brand"
+
+/** Same class, defaulting to our configured backend (src/brand.ts). */
+export class GameDatabase extends _GameDatabase {
+  constructor(url: string = STREAM_API_URL) {
+    super(url)
+  }
+}
 export type { GameCover, GameGenre } from "@zap.stream/api"
 
 /** @deprecated Use named import `{ GameDatabase }` instead */

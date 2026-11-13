@@ -1,3 +1,4 @@
+import { APP_DOMAIN } from "@/brand"
 import "./alert.css"
 
 import { EventBuilder, NostrSystem } from "@snort/system"
@@ -11,7 +12,7 @@ import { ErrorBoundary } from "@/element/error-boundary"
 import enMessages from "@/translations/en.json"
 import { AlertWidget } from "./widget"
 
-EventBuilder.ClientTag = ["client", "zap.stream", __ZAP_STREAM_VERSION__]
+EventBuilder.ClientTag = ["client", APP_DOMAIN, __ZAP_STREAM_VERSION__]
 
 const system = new NostrSystem({ buildFollowGraph: false, disableSyncModule: true })
 for (const [relay, settings] of Object.entries(defaultRelays)) {

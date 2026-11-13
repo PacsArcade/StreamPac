@@ -1,10 +1,12 @@
+import { DEFAULT_API_URL } from "./constants"
+
 /**
  * Game database client for the zap.stream IGDB-powered game search API.
  */
 export class GameDatabase {
   readonly url: string
 
-  constructor(url = "https://api-core.zap.stream/api/v1") {
+  constructor(url = DEFAULT_API_URL) {
     this.url = url
   }
 

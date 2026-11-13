@@ -1,3 +1,4 @@
+import { APP_NAME } from "@/brand"
 import "./layout.css"
 
 import { type CSSProperties, useContext, useEffect, useState } from "react"
@@ -61,7 +62,7 @@ export function LayoutPage() {
   return (
     <div style={styles}>
       <Helmet>
-        <title>Home - zap.stream</title>
+        <title>{`Home - ${APP_NAME}`}</title>
       </Helmet>
 
       <HeaderNav />

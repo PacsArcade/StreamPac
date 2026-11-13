@@ -1,3 +1,4 @@
+import { STREAM_API_URL } from "@/brand"
 import { timeSync as _timeSync, TimeSync as _TimeSyncClass } from "@zap.stream/api"
 
 /**
@@ -10,7 +11,7 @@ export let TimeSync = 0
 
 /** Sync the clock with the API server and keep the legacy `TimeSync` variable updated. */
 export async function syncClock() {
-  await _timeSync.syncClock()
+  await _timeSync.syncClock(STREAM_API_URL)
   TimeSync = _timeSync.offset
 }
 

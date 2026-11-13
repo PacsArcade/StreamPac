@@ -2,7 +2,7 @@ import { base64, hex } from "@scure/base"
 import { sha256 } from "@noble/hashes/sha2.js"
 import type { Signer, NostrEvent } from "./types"
 import { appendDedupe, unixNow, buildUnsignedEvent } from "./types"
-import { HTTP_AUTH_KIND } from "./constants"
+import { HTTP_AUTH_KIND, DEFAULT_API_URL } from "./constants"
 import { withQuery } from "./query"
 
 /**
@@ -23,7 +23,7 @@ export class TimeSync {
    * Synchronize the local clock with the zap.stream API server.
    * Sets the internal offset used for auth event timestamps.
    */
-  async syncClock(apiUrl = "https://api-core.zap.stream/api/v1"): Promise<void> {
+  async syncClock(apiUrl = DEFAULT_API_URL): Promise<void> {
     try {
       const now = Date.now()
       const req = await fetch(`${apiUrl}/time`, {

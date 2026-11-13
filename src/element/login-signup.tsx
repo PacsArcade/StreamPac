@@ -14,7 +14,7 @@ import { IconButton, PrimaryButton } from "./buttons"
 import { ExternalLink } from "./external-link"
 import { FileUploader } from "./file-uploader"
 import { useStreamProvider } from "@/hooks/stream-provider"
-import { gtag } from "@/gtm"
+import { APP_NAME } from "@/brand"
 import { defaultLightningAddress, lightningAddressCheckRequired, parsePrivateKey } from "./login-keys"
 
 enum Stage {
@@ -208,9 +208,6 @@ export function LoginSignup({ close }: { close: () => void }) {
 
   function finishSignup() {
     Login.loginWithPrivateKey(key)
-    gtag("event", "conversion", {
-      send_to: "AW-17854661671/Rr6ECM36090bEKeI4sFC",
-    })
     close()
   }
 
@@ -247,7 +244,7 @@ export function LoginSignup({ close }: { close: () => void }) {
               <Logo width={30} />
             </span>
             <h2>
-              <FormattedMessage defaultMessage="Welcome to zap.stream" />
+              <FormattedMessage defaultMessage="Welcome to {name}" values={{ name: APP_NAME }} />
             </h2>
             <p className="text-layer-5 text-[15px] max-w-[320px]">
               <FormattedMessage defaultMessage="Watch, stream and get paid in sats. No email or password needed." />

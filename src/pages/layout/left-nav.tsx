@@ -1,3 +1,4 @@
+import { UPSTREAM_NAME, UPSTREAM_URL } from "@/brand"
 import { useLayout } from "./context"
 import { NavLinkIcon } from "./nav-icon"
 import { FormattedMessage } from "react-intl"
@@ -45,6 +46,9 @@ export function LeftNav() {
           </NavLinkIcon>
         </nav>
         <FollowingLive onNavigate={hideAfterMobileNav} />
+        <p className="px-2.5 text-xs text-layer-4">
+          Built on <a className="underline" href={UPSTREAM_URL} target="_blank" rel="noreferrer">{UPSTREAM_NAME}</a> by v0l (MIT).
+        </p>
       </div>
     )
   }

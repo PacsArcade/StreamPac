@@ -1,3 +1,4 @@
+import { APP_DOMAIN } from "@/brand"
 import "@szhsin/react-menu/dist/index.css"
 import "./index.css"
 import "./fonts/bricolage/bricolage.css"
@@ -45,7 +46,7 @@ const workerRelay = new WorkerRelayInterface(
   import.meta.env.DEV ? new URL("@snort/worker-relay/dist/esm/worker.mjs", import.meta.url) : new WorkerVite(),
 )
 console.debug(`WASM config: has=${hasWasm}, use_worker_relay=${useWorkerRelay}`)
-EventBuilder.ClientTag = ["client", "zap.stream", __ZAP_STREAM_VERSION__]
+EventBuilder.ClientTag = ["client", APP_DOMAIN, __ZAP_STREAM_VERSION__]
 export const System = new NostrSystem({
   optimizer: hasWasm ? WasmOptimizer : undefined, // use optimizer always when WASM is available
   cachingRelay: useWorkerRelay ? workerRelay : undefined,

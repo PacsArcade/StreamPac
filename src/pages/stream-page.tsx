@@ -1,3 +1,4 @@
+import { APP_NAME } from "@/brand"
 import type { NostrLink, TaggedNostrEvent } from "@snort/system"
 import { Helmet } from "@dr.pogodin/react-helmet"
 import { useMediaQuery } from "usehooks-ts"
@@ -28,7 +29,7 @@ function StreamPageContent() {
   return (
     <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_400px] 2xl:grid-cols-[minmax(0,1fr)_440px] max-xl:flex max-xl:flex-col xl:gap-6 xl:p-6 h-full min-h-0">
       <Helmet>
-        <title>{`${info?.title ?? "Untitled"} - zap.stream`}</title>
+        <title>{`${info?.title ?? "Untitled"} - ${APP_NAME}`}</title>
         <meta name="description" content={descriptionContent} />
         {link && <meta property="og:url" content={`https://${window.location.host}/${link.encode()}`} />}
         <meta property="og:type" content="video" />

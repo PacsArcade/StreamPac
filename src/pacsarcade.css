@@ -1,0 +1,41 @@
+/*
+ * Pac's Arcade Stream theme: tokens + 8-bit notched cards only.
+ * Dark only. Cyan #00ffff, Pac's Arcade pink #ff00ff, gold #ffd700.
+ * Imported last from src/index.css. No component edits needed.
+ */
+:root {
+  --primary: #00ffff;
+  --secondary: #ff00ff;
+  --zap: #ffd700;
+  --color-primary: #00ffff;
+  --color-secondary: #ff00ff;
+  --color-zap: #ffd700;
+  --color-on-primary: #001414;
+  --color-layer-0: #0a0710;
+  --color-layer-1: #130e1c;
+  --color-layer-2: #1d1629;
+  --color-layer-3: #2e2340;
+  --color-layer-4: #a79fb8;
+  --color-layer-5: #d2cde0;
+  --color-text: #f4f1fa;
+  --color-signal: #00ffff;
+  --surface: #1d1629;
+  --border: #130e1c;
+  --border-2: #2e2340;
+  --gradient-purple: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+  color-scheme: dark;
+}
+
+/* 8-bit notched corners (12/6 px steps), same polygon as frens.earth .r6-px8 */
+main div.bg-layer-1.rounded-xl,
+main div.bg-layer-1.rounded-2xl,
+main div.aspect-video.rounded-xl {
+  border-radius: 0;
+  clip-path: polygon(
+    0 12px, 6px 12px, 6px 6px, 12px 6px, 12px 0,
+    calc(100% - 12px) 0, calc(100% - 12px) 6px, calc(100% - 6px) 6px, calc(100% - 6px) 12px, 100% 12px,
+    100% calc(100% - 12px), calc(100% - 6px) calc(100% - 12px), calc(100% - 6px) calc(100% - 6px),
+    calc(100% - 12px) calc(100% - 6px), calc(100% - 12px) 100%,
+    12px 100%, 12px calc(100% - 6px), 6px calc(100% - 6px), 6px calc(100% - 12px), 0 calc(100% - 12px)
+  );
+}

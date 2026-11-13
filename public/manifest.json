@@ -1,6 +1,6 @@
 {
-  "short_name": "zap.stream",
-  "name": "zap.stream",
+  "short_name": "Pac's Arcade Stream",
+  "name": "Pac's Arcade Stream",
   "icons": [
     {
       "src": "logo.png",
@@ -15,6 +15,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#0a0710",
+  "background_color": "#0a0710"
 }

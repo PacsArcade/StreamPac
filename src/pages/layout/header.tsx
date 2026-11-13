@@ -1,3 +1,4 @@
+import { APP_NAME } from "@/brand"
 import { BorderButton, IconButton, PrimaryButton } from "@/element/buttons"
 import { Icon } from "@/element/icon"
 import { LoginSignup } from "@/element/login-signup"
@@ -168,7 +169,7 @@ export function HeaderNav() {
         <Link to="/" className="flex items-center gap-2 text-primary">
           <Logo width={30} />
           <span className="font-display text-xl font-extrabold tracking-tight text-text max-md:hidden">
-            zap<span className="text-primary">.</span>stream
+            {APP_NAME}
           </span>
         </Link>
       </div>

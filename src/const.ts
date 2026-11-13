@@ -29,6 +29,8 @@ export { StreamState } from "@zap.stream/api"
 
 // ─── App-specific constants (not part of the API library) ─────────────────────
 
+import { PACSARCADE_RELAYS } from "@/brand"
+
 export const ZAP_STREAM_PUBKEY = "cf45a6ba1363ad7ed213a078e710d24115ae721c9b47bd1ebf4458eaefb4c2a5"
 
 export const USER_CARDS = 17_777 as EventKind
@@ -40,16 +42,7 @@ export const DAY = 24 * HOUR
 export const WEEK = 7 * DAY
 export const MONTH = 30 * DAY
 
-export const defaultRelays = {
-  //"ws://localhost:8081": { read: true, write: true },
-  "wss://relay.snort.social": { read: true, write: true },
-  "wss://nos.lol": { read: true, write: true },
-  "wss://relay.damus.io": { read: true, write: true },
-  "wss://nostr.wine": { read: true, write: true },
-  "wss://relay.primal.net": { read: true, write: true },
-  "wss://relay.fountain.fm": { read: true, write: true },
-  "wss://relay.divine.video/": { read: true, write: true },
-}
+export const defaultRelays = PACSARCADE_RELAYS
 
 export const PROVIDER_DISCOVERY_RELAYS = ["wss://relay.ditto.pub"]
 
