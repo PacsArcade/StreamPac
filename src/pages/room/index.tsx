@@ -23,6 +23,7 @@ import { formatSats } from "@/number"
 import { FrenRing, type MediaEl, SquadTile } from "./squad"
 import { type FeedTab, OpenPost, PostCard, feedTabKey, useRoomFeed } from "./feed"
 import { SQUAD_MAX_DESKTOP, SQUAD_MAX_PHONE, pickSquad, roomReducer } from "./room-state"
+import { SQUAD_CAP, SquadStore, pinFirst, removeFromSquad, streamAddr, useSquadPicks } from "./squad-store"
 
 const DEFAULT_TAGS = ["gaming", "bitcoin", "music"]
 
@@ -34,9 +35,11 @@ export function RoomPage() {
   const streams = useStreamsFeed()
   const { live } = useSortedStreams(streams.filter(a => !muted.has(getHost(a))))
 
-  const [pinned, setPinned] = useState<Array<string>>([])
+  // the streams you picked (here or from Discover), kept on this device; addresses, not event ids
+  const pinned = useSquadPicks()
   const [dropped, setDropped] = useState<Set<string>>(new Set())
-  const max = isDesktop ? SQUAD_MAX_DESKTOP : SQUAD_MAX_PHONE
+  // a phone shows 3 tiles, but never hides a stream you picked: with 4 picks it shows 4
+  const max = isDesktop ? SQUAD_MAX_DESKTOP : Math.min(SQUAD_CAP, Math.max(SQUAD_MAX_PHONE, pinned.length))
   const squad = useMemo(() => pickSquad(live, follows, max, pinned, dropped), [live, follows, max, pinned, dropped])
 
   const [state, dispatch] = useReducer(roomReducer, {})
@@ -68,8 +71,9 @@ export function RoomPage() {
       n.delete(ev.id)
       return n
     })
-    setPinned(p => [ev.id, ...p.filter(x => x !== ev.id)])
+    SquadStore.set(pinFirst(SquadStore.get(), streamAddr(ev)))
   }
+  const picked = squad.events.filter(e => pinned.includes(streamAddr(e)) || pinned.includes(e.id)).length
   const offSquad = live.filter(e => !squad.events.some(s => s.id === e.id)).slice(0, 12)
 
   const tiles = (
@@ -88,7 +92,7 @@ export function RoomPage() {
           onSound={() => dispatch({ type: "sound", id: ev.id })}
           onResume={() => dispatch({ type: "resume" })}
           onRemove={() => {
-            setPinned(p => p.filter(x => x !== ev.id))
+            SquadStore.set(removeFromSquad(SquadStore.get(), streamAddr(ev)))
             setDropped(d => new Set(d).add(ev.id))
           }}
           mediaRef={el => {
@@ -217,6 +221,11 @@ export function RoomPage() {
             </Menu>
           )}
         </div>
+        {picked > 0 && (
+          <p className="text-[13px] font-semibold text-primary max-xl:px-3 -mt-1" data-testid="squad-picked">
+            {picked} of {SQUAD_CAP} picked by you, first on the squad
+          </p>
+        )}
         {tiles}
         {audibleEv && (
           <NowPlaying
