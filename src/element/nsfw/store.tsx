@@ -5,7 +5,8 @@ class Store extends ExternalStore<boolean> {
 
   constructor() {
     super()
-    this.#value = Boolean(window.localStorage.getItem("accepted-content-warning"))
+    // "false" is stored when it is turned off, so read the value, not just whether it is there
+    this.#value = window.localStorage.getItem("accepted-content-warning") === "true"
   }
 
   setValue(v: boolean) {

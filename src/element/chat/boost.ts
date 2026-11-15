@@ -33,3 +33,30 @@ export function pinnedBoost<T extends { amount: number; content?: string; create
     })
     .sort((a, b) => b.created_at - a.created_at)[0]
 }
+
+/** What a picked amount does when it is sent with a message: the highest tier it reaches, or a plain zap under 210. */
+export type BoostEffect = BoostTier | "zap"
+
+export function boostEffect(amountSats: number): BoostEffect {
+  return boostTier(amountSats, "x") ?? "zap"
+}
+
+/** The words under the open box, so the watcher sees what their amount gets before they send it. */
+export function boostEffectWords(e: BoostEffect): string {
+  if (e === "zap") return `A plain zap with your message. ${BOOST_TIERS[0].sats} or more makes it bold.`
+  const t = BOOST_TIERS.find(b => b.tier === e) ?? BOOST_TIERS[0]
+  const next = BOOST_TIERS[BOOST_TIERS.indexOf(t) + 1]
+  return `Gets ${t.name}: ${t.what}${next ? ` ${next.sats.toLocaleString("en-US")} or more gets ${next.name}.` : ""}`
+}
+
+/** The most sats the open box takes in one go (1,000,000 = 0.01 BTC); more than that is a typo more often than not. */
+export const PICK_MAX_SATS = 1_000_000
+
+/** Reads what the watcher typed in the open box: whole sats, 1 to PICK_MAX_SATS, commas and spaces allowed. */
+export function parsePickedSats(text: string): number | undefined {
+  const clean = text.replace(/[\s,_]/g, "")
+  if (!/^\d+$/.test(clean)) return
+  const n = Number(clean)
+  if (!Number.isSafeInteger(n) || n < 1 || n > PICK_MAX_SATS) return
+  return n
+}

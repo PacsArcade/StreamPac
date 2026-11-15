@@ -9,6 +9,7 @@ import { useLogin } from "@/hooks/login"
 import { trackEvent } from "@/utils"
 import { HeaderNav } from "./header"
 import { LeftNav } from "./left-nav"
+import { SiteFooter } from "./footer"
 import { SnortContext, TraceTimelineOverlay } from "@snort/system-react"
 import { EventKind } from "@snort/system"
 import { USER_CARDS } from "@/const"
@@ -77,6 +78,8 @@ export function LayoutPage() {
         <LeftNav />
         <main className="flex-1 min-w-0">
           <Outlet />
+          {/* Discover fills the screen and does not scroll, so it has no footer */}
+          {!location.pathname.startsWith("/discover") && <SiteFooter />}
         </main>
       </div>
       <TraceTimelineOverlay isOpen={trace} onClose={() => setTrace(false)} />

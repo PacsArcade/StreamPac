@@ -1,4 +1,3 @@
-import { UPSTREAM_NAME, UPSTREAM_URL } from "@/brand"
 import { useLayout } from "./context"
 import { NavLinkIcon } from "./nav-icon"
 import { FormattedMessage } from "react-intl"
@@ -15,6 +14,7 @@ import { getName } from "@/element/profile"
 import type { NostrEvent } from "@snort/system"
 import { useStreamHref } from "@/hooks/short-link"
 import { BftClock } from "@/element/bft-clock"
+import { useShowAdult, withoutAdult } from "@/element/nsfw/adult"
 
 export function LeftNav() {
   const layout = useLayout()
@@ -54,13 +54,6 @@ export function LeftNav() {
         </nav>
         <FollowingLive onNavigate={hideAfterMobileNav} />
         {isDesktop && <BftClock />}
-        <p className="px-2.5 text-xs text-layer-4">
-          Built on{" "}
-          <a className="underline" href={UPSTREAM_URL} target="_blank" rel="noreferrer">
-            {UPSTREAM_NAME}
-          </a>{" "}
-          by v0l (MIT).
-        </p>
       </div>
     )
   }
@@ -92,7 +85,8 @@ function FollowingLive({ onNavigate }: { onNavigate: () => void }) {
   const login = useLogin()
   const follows = useFollows()
   const streams = useStreamsFeed()
-  const { live } = useSortedStreams(streams)
+  const showAdult = useShowAdult()
+  const { live } = useSortedStreams(withoutAdult(streams, showAdult))
   const following = live.filter(a => follows.has(getHost(a)))
 
   if (!login || following.length === 0) return

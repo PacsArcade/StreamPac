@@ -1,6 +1,6 @@
 # Pac's Arcade Stream (pacsarcade.stream)
 
-A thin rebrand of [v0l/zap.stream](https://github.com/v0l/zap.stream) (MIT, (c) Kieran/v0l). Upstream license and credit are kept (LICENSE untouched; credit line in the left nav). Branch `pacsarcade-stream`, started from upstream/main at 72c1818. Merge upstream into it (never rebase).
+A thin rebrand of [v0l/zap.stream](https://github.com/v0l/zap.stream) (MIT, (c) Kieran/v0l). Upstream license and credit are kept (LICENSE untouched; the credit line is in the site footer and on the settings page). Branch `pacsarcade-stream`, started from upstream/main at 72c1818. Merge upstream into it (never rebase).
 
 ## What changed and where
 | Change | Where |
@@ -37,6 +37,15 @@ Fourth pass, Discover (step 2 of the round 3 design, block 975,999). `/discover`
 - Side buttons: Zap (the same zap flow as "Boost or zap the stream"), Chat (that stream's chat with the lightning tab; a sheet on a phone, the right column on desktop), Squad, Share (system share, else copy the link).
 - Squad: Add puts the stream into the Room's squad (`src/pages/room/squad-store.ts`, kept on this device under `pa-squad`, by stream address `30311:author:d` because the event id changes on every update). Up to 4; a 5th says the squad is full and changes nothing. Ended streams do not hold a seat. The Room shows your picks first; a phone shows all 4 when you picked 4 (2 x 2).
 - Left out of Discover: non-HLS streams (they play on their own page), streams with a content warning unless you accepted them, your own stream.
+
+Fifth pass, his marks on Discover (block 976,007).
+- Discover's right rail is pixel icons with a small label under each and an aria-label on each (`src/pages/discover/rail-icons.tsx`, 14 x 14 grids drawn at 2 px a pixel, crisp edges): Zap (a lightning bolt), Chat (a bubble), Squad (three heads with a small gold plug, and a "+" while the stream is not on your squad), Share (a forwarding arrow).
+- Share opens a sheet (`share-sheet.tsx`): "Repost to nostr" is a NIP-18 generic repost, kind 16, of the 30311 (`streamRepost` in `share.ts`: the stream event as content, `a`, `e`, `p`, `k` tags), signed by the login's own signer and sent to the relays; logged out it says "Log in" and opens the login. "Share somewhere else" opens the device share sheet, or copies the link.
+- Phone chat in Discover is see-through glass over the lower half of the stream: `rgb(6 5 10 / 0.64)` with an 8 px backdrop blur; muted chat text is lifted to #ebe6f0 inside it. The video keeps playing behind it. Desktop chat is unchanged (the right column).
+- The "Built on zap.stream by v0l (MIT)" credit left the phone menu and the left rail. It is in the site footer (`pages/layout/footer.tsx`, every page but Discover, which fills the screen) and on the settings page (an "About" card). One component, `element/upstream-credit.tsx`.
+- 18+ (`element/nsfw/adult.ts`): a stream is 18+ when it has a content-warning tag (with or without a reason) or its title has 🔞, "18+" or "NSFW" (`ADULT_TITLE_PATTERNS`, tested with near-misses in `adult.test.ts`). 18+ streams are left out of Discover, the Room squad (and its Add menu), the frens rings and the left rail's "Frens live now" unless the watcher turns on "Show 18+ streams" in settings (off by default, stored on this device as `pa-show-18plus`). A left-out stream is never rendered, so its picture is never requested. The stream page's own "I am over 18" overlay is unchanged and separate.
+- Pick your sats (`element/chat/pick-sats.tsx`): the lightning tab keeps Bold 210, Pin to top 2,100 and Glow 21,000 and gets a fourth choice, an open box for your own amount. The amount gets the highest tier it reaches; under 210 it is a plain zap with the message (`boostEffect` in `boost.ts`). The same box is on every "Boost or zap the stream" (`SendZaps` with `pickYourSats`), where it replaces the hidden "Custom" amount in sats.
+- Also fixed: `NSFWStore` read any stored value as "accepted", so turning it off ("false") still read as on after a reload. It now reads `"true"` only.
 
 Still not done: NIP-05 domain default (still `zap.stream`, set `VITE_NIP5_DOMAIN` when we serve our own `/.well-known/nostr.json`), a real contact address and Twitter handle, other locale files still carry old zap.stream strings (en is regenerated).
 

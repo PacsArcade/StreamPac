@@ -52,3 +52,37 @@
     0 0 16px 4px rgb(255 69 0 / 0.35);
   flex: none;
 }
+
+/* A plain on/off switch (settings). Off is grey, on is the primary colour. */
+.pa-switch {
+  appearance: none;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--color-layer-3, #2e2340);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.pa-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f2ede6;
+  transition: transform 0.15s;
+}
+.pa-switch:checked {
+  background: var(--color-primary, #00ffff);
+}
+.pa-switch:checked::after {
+  transform: translateX(20px);
+  background: #0a0907;
+}
+.pa-switch:focus-visible {
+  outline: 2px solid var(--color-primary, #00ffff);
+  outline-offset: 2px;
+}

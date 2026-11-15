@@ -14,6 +14,9 @@ import { hexToBech32 } from "@snort/shared"
 import { NostrConnectWallet, WalletKind } from "@snort/wallet"
 import { useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
+import { ShowAdultStore, useShowAdult } from "@/element/nsfw/adult"
+import { UpstreamCredit } from "@/element/upstream-credit"
+import { APP_NAME } from "@/brand"
 
 const ThemeColors = ["#ffb000", "#7F006A", "#E206BF", "#7406E2", "#3F06E2", "#393939", "#ff563f", "#ff8d2b", "#34d2fe"]
 
@@ -23,6 +26,7 @@ export default function AccountSettingsTab() {
   const [error, setError] = useState("")
   const nsec = useCopy()
   const current = login?.color ?? ThemeColors[0]
+  const showAdult = useShowAdult()
 
   return (
     <div className="flex flex-col gap-5">
@@ -134,6 +138,31 @@ export default function AccountSettingsTab() {
             {error && <b className="text-sm text-warning">{error}</b>}
           </div>
         )}
+      </DashboardCard>
+      <DashboardCard title="18+ streams">
+        <label className="flex items-start justify-between gap-4 cursor-pointer" data-testid="adult-setting">
+          <span className="flex flex-col gap-1">
+            <span className="font-semibold">Show 18+ streams</span>
+            <span className="text-sm text-layer-4">
+              Off: streams with a content warning, or with 🔞, 18+ or NSFW in the title, are hidden from Discover, the
+              Room squad and the frens rings, and their pictures are never loaded. Turn this on only if you are over 18.
+            </span>
+          </span>
+          <input
+            type="checkbox"
+            role="switch"
+            aria-checked={showAdult}
+            className="pa-switch shrink-0 mt-1"
+            checked={showAdult}
+            onChange={e => ShowAdultStore.setValue(e.target.checked)}
+            aria-label="Show 18+ streams"
+            data-testid="adult-toggle"
+          />
+        </label>
+      </DashboardCard>
+      <DashboardCard title="About">
+        <p className="text-sm text-layer-5">{APP_NAME} is free and open source.</p>
+        <UpstreamCredit className="text-sm text-layer-5" />
       </DashboardCard>
     </div>
   )
