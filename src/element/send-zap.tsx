@@ -19,6 +19,8 @@ import { useUserProfile } from "@snort/system-react"
 import { getHost } from "@/utils"
 import { getName } from "./profile"
 import { useWallet } from "@/hooks/wallet"
+import { parsePickedSats } from "./chat/boost"
+import { PickYourSats } from "./chat/pick-sats"
 
 export interface LNURLLike {
   get name(): string
@@ -42,6 +44,8 @@ export interface SendZapsProps {
   onFinish: () => void
   onTargetReady?: () => void
   button?: ReactNode
+  /** show the "Pick your sats" open box (used on "Boost or zap the stream") */
+  pickYourSats?: boolean
 }
 
 export function SendZaps({
@@ -54,6 +58,7 @@ export function SendZaps({
   onTargetReady,
   presetAmount,
   presetComment,
+  pickYourSats,
 }: SendZapsProps) {
   const satsAmounts = [
     21, 69, 121, 420, 1_000, 2_100, 4_200, 10_000, 21_000, 42_000, 69_000, 100_000, 210_000, 500_000, 1_000_000,
@@ -64,6 +69,10 @@ export function SendZaps({
   const [customAmount, setCustomAmount] = useState(presetAmount !== undefined && !satsAmounts.includes(presetAmount))
   const [amount, setAmount] = useState(presetAmount ?? satsAmounts[0])
   const [comment, setComment] = useState(presetComment ?? "")
+  // the open box: what the watcher typed; empty while a preset amount is chosen
+  const [picked, setPicked] = useState("")
+  const pickedSats = parsePickedSats(picked)
+  const usePick = !!pickYourSats && !isFiat
   const [invoice, setInvoice] = useState("")
   const [invoiceWarning, setInvoiceWarning] = useState<ReactNode>()
   const login = useLogin()
@@ -103,7 +112,8 @@ export function SendZaps({
       isAnon = true
     }
 
-    const amountInSats = isFiat ? Math.floor((amount / usdRate) * 1e8) : amount
+    const amountInSats =
+      usePick && picked.trim() ? (pickedSats ?? 0) : isFiat ? Math.floor((amount / usdRate) * 1e8) : amount
     if (!Number.isFinite(amountInSats) || amountInSats <= 0) return
     const commentText = svc.maxCommentLength > 0 ? comment.slice(0, svc.maxCommentLength) : comment
     let zap: NostrEvent | undefined
@@ -192,17 +202,31 @@ export function SendZaps({
             )}
           </small>
           <div className="grid grid-cols-5 gap-2 text-center">
-            {!customAmount &&
+            {(usePick || !customAmount) &&
               (isFiat ? usdAmounts : satsAmounts).map(a => (
-                <Pill key={a} selected={a === amount} onClick={() => setAmount(a)}>
+                <Pill
+                  key={a}
+                  selected={a === amount && !(usePick && picked.trim())}
+                  onClick={() => {
+                    setAmount(a)
+                    setPicked("")
+                  }}
+                >
                   {isFiat ? `$${a.toLocaleString()}` : formatSats(a)}
                 </Pill>
               ))}
-            <Pill onClick={() => setCustomAmount(s => !s)} selected={customAmount}>
-              <FormattedMessage defaultMessage="Custom" />
-            </Pill>
+            {!usePick && (
+              <Pill onClick={() => setCustomAmount(s => !s)} selected={customAmount}>
+                <FormattedMessage defaultMessage="Custom" />
+              </Pill>
+            )}
           </div>
-          {customAmount && <input type="number" value={amount} onChange={e => setAmount(e.target.valueAsNumber)} />}
+          {!usePick && customAmount && (
+            <input type="number" value={amount} onChange={e => setAmount(e.target.valueAsNumber)} />
+          )}
+          {usePick && (
+            <PickYourSats value={picked} onChange={setPicked} selected={picked.trim().length > 0} showEffect={!!aTag} />
+          )}
         </div>
         {svc && (svc.maxCommentLength > 0 || svc.canZap) && (
           <div className="flex flex-col gap-2">
@@ -214,7 +238,7 @@ export function SendZaps({
             </div>
           </div>
         )}
-        <PrimaryButton onClick={send}>
+        <PrimaryButton onClick={send} disabled={usePick && picked.trim().length > 0 && pickedSats === undefined}>
           <FormattedMessage defaultMessage="Zap!" />
         </PrimaryButton>
       </>

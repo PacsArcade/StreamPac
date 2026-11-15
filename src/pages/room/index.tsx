@@ -20,6 +20,7 @@ import { RoomClipButton } from "@/element/stream/room-clip"
 import { LiveChat } from "@/element/chat/live-chat"
 import { StreamContextProvider } from "@/element/stream/stream-state"
 import { formatSats } from "@/number"
+import { useShowAdult, withoutAdult } from "@/element/nsfw/adult"
 import { FrenRing, type MediaEl, SquadTile } from "./squad"
 import { type FeedTab, OpenPost, PostCard, feedTabKey, useRoomFeed } from "./feed"
 import { SQUAD_MAX_DESKTOP, SQUAD_MAX_PHONE, pickSquad, roomReducer } from "./room-state"
@@ -33,7 +34,14 @@ export function RoomPage() {
   const follows = useFollows()
   const muted = useMutedPubkeys()
   const streams = useStreamsFeed()
-  const { live } = useSortedStreams(streams.filter(a => !muted.has(getHost(a))))
+  // 18+ streams stay off the squad, the rings and the Add menu unless you opted in in settings
+  const showAdult = useShowAdult()
+  const { live } = useSortedStreams(
+    withoutAdult(
+      streams.filter(a => !muted.has(getHost(a))),
+      showAdult,
+    ),
+  )
 
   // the streams you picked (here or from Discover), kept on this device; addresses, not event ids
   const pinned = useSquadPicks()
@@ -334,6 +342,7 @@ function NowPlaying({
             aTag={`${ev.kind}:${ev.pubkey}:${findTag(ev, "d")}`}
             targetName={getName(host, profile)}
             label="Boost or zap the stream"
+            pickYourSats
           />
         ) : (
           <DefaultButton disabled title="This streamer has no lightning address on their profile">

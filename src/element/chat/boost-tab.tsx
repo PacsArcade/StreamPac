@@ -4,7 +4,8 @@ import { Icon } from "../icon"
 import Modal from "../modal"
 import { PrimaryButton } from "../buttons"
 import { SendZaps } from "../send-zap"
-import { BOOST_TIERS, type BoostTier } from "./boost"
+import { BOOST_TIERS, type BoostTier, boostEffect, parsePickedSats } from "./boost"
+import { PickYourSats } from "./pick-sats"
 
 /**
  * The lightning tab on the right of chat. Optional: plain chat stays free.
@@ -23,10 +24,13 @@ export function BoostTab({
   targetName?: string
 }) {
   const [open, setOpen] = useState(false)
-  const [tier, setTier] = useState<BoostTier>("pin")
+  // a tier, or "pick" for the open box where the watcher types their own amount
+  const [tier, setTier] = useState<BoostTier | "pick">("pin")
+  const [picked, setPicked] = useState("")
   const [message, setMessage] = useState("")
   const [paying, setPaying] = useState(false)
-  const chosen = BOOST_TIERS.find(t => t.tier === tier) ?? BOOST_TIERS[1]
+  const pickedSats = parsePickedSats(picked)
+  const amount = tier === "pick" ? pickedSats : (BOOST_TIERS.find(t => t.tier === tier) ?? BOOST_TIERS[1]).sats
 
   return (
     <>
@@ -49,7 +53,7 @@ export function BoostTab({
       </div>
       {open && (
         <div
-          className="absolute inset-x-2 bottom-[64px] z-[6] flex flex-col gap-2.5 rounded-xl border border-zap/60 bg-layer-1 p-3 shadow-xl"
+          className="absolute inset-x-2 bottom-[64px] z-[6] flex flex-col gap-2.5 rounded-xl border border-zap/60 bg-layer-1 p-3 shadow-xl max-h-[calc(100%-72px)] overflow-y-auto scrollbar-hidden"
           data-testid="boost-panel"
         >
           <div className="flex items-center justify-between">
@@ -91,10 +95,24 @@ export function BoostTab({
                 </span>
               </button>
             ))}
+            <PickYourSats
+              value={picked}
+              onChange={v => {
+                setPicked(v)
+                setTier("pick")
+              }}
+              selected={tier === "pick"}
+              onFocus={() => setTier("pick")}
+            />
           </div>
           {lnurl ? (
-            <PrimaryButton disabled={message.trim().length === 0} onClick={() => setPaying(true)}>
-              Send for {chosen.sats.toLocaleString("en-US")} sats
+            <PrimaryButton
+              disabled={message.trim().length === 0 || amount === undefined}
+              onClick={() => setPaying(true)}
+              data-testid="boost-send"
+              data-effect={amount !== undefined ? boostEffect(amount) : undefined}
+            >
+              {amount === undefined ? "Type your amount" : `Send for ${amount.toLocaleString("en-US")} sats`}
             </PrimaryButton>
           ) : (
             <span className="text-[12px] text-layer-4">
@@ -107,14 +125,14 @@ export function BoostTab({
           </span>
         </div>
       )}
-      {paying && lnurl && (
+      {paying && lnurl && amount !== undefined && (
         <Modal id="boost-zap" onClose={() => setPaying(false)}>
           <SendZaps
             lnurl={lnurl}
             pubkey={pubkey}
             aTag={aTag}
             targetName={targetName}
-            presetAmount={chosen.sats}
+            presetAmount={amount}
             presetComment={message}
             onFinish={() => {
               setPaying(false)

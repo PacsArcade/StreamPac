@@ -232,3 +232,79 @@
     top: 62px;
   }
 }
+
+/* The rail: pixel icons in the circles, a small label under each. */
+.discover-round {
+  position: relative;
+}
+.discover-round svg {
+  image-rendering: pixelated;
+}
+.discover-caption {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text, #f2ede6);
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.9);
+  white-space: nowrap;
+}
+.discover-plus {
+  position: absolute;
+  right: -3px;
+  top: -3px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-primary, #00ffff);
+  color: #0a0907;
+  box-shadow: 0 0 0 2px rgb(10 9 7 / 0.9);
+}
+
+/*
+ * Phone chat over the stream: see-through dark glass over the lower part of the video, with a blur.
+ * The video keeps playing behind it. 0.64 black over the brightest frame (pure white) leaves at most about #5c5c5c
+ * behind the text, so #f2ede6 text stays near 5.8:1 and the muted text near 5:1 (WCAG AA is 4.5:1) whatever the
+ * frame shows; the measured ratios are in the report.
+ */
+.discover-sheet.discover-glass {
+  height: 50%;
+  background: rgb(6 5 10 / 0.64);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+}
+/* with the chat open, the card's own dark fade is dropped so more of the frame shows through the glass */
+.discover-chat-open .discover-card::after {
+  opacity: 0;
+}
+/* and the title block and the rail step aside (the sheet has its own close button), so only the stream is behind */
+.discover-chat-open .discover-info,
+.discover-chat-open .discover-card > .discover-buttons {
+  visibility: hidden;
+}
+.discover-glass-chat {
+  background: transparent;
+  border: 0;
+}
+.discover-glass-chat,
+.discover-glass-chat .text-layer-4,
+.discover-glass-chat .text-layer-5 {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.6);
+}
+/* muted text in the glass is lifted a step so it stays readable over a bright frame */
+.discover-glass-chat .text-layer-4,
+.discover-glass-chat .text-layer-5 {
+  color: #ebe6f0;
+}
+/* chatters' names (#ff00ff) are lifted to a pale pink in the glass: 4.6:1 even over a white frame, against 2:1 */
+.discover-glass-chat .text-secondary {
+  color: #ffccff;
+}
+.discover-glass-chat .border-layer-3 {
+  border-color: rgb(255 255 255 / 0.14);
+}
+.discover-glass-chat .bg-layer-2 {
+  background-color: rgb(29 22 41 / 0.7);
+}

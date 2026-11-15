@@ -22,14 +22,13 @@ import { useMediaQuery } from "usehooks-ts"
 import { useStreamsFeed } from "@/hooks/live-streams"
 import { useSortedStreams } from "@/hooks/useLiveStreams"
 import { useFollows, useLogin, useMutedPubkeys } from "@/hooks/login"
-import { useStreamHref } from "@/hooks/short-link"
 import useImgProxy from "@/hooks/img-proxy"
 import { extractStreamInfo, findTag, getHost } from "@/utils"
 import { getName } from "@/element/profile"
 import { Avatar } from "@/element/avatar"
 import { Icon } from "@/element/icon"
 import { LiveTag } from "@/element/live-tag"
-import { useContentWarning } from "@/element/nsfw"
+import { isAdultStream, useShowAdult } from "@/element/nsfw/adult"
 import { SendZapsDialog } from "@/element/send-zap"
 import { LiveChat } from "@/element/chat/live-chat"
 import { StreamContextProvider } from "@/element/stream/stream-state"
@@ -50,6 +49,8 @@ import {
   whyShown,
   whyText,
 } from "./discover-state"
+import { CHAT_GRID, PLUS_GRID, PixelIcon, SHARE_GRID, SQUAD_GRID, ZAP_GRID } from "./rail-icons"
+import { ShareSheet } from "./share-sheet"
 
 type MediaEl = HlsVideoElement & HTMLElement
 
@@ -74,17 +75,19 @@ export function DiscoverPage() {
   const streams = useStreamsFeed()
   const { live } = useSortedStreams(streams.filter(a => !muted.has(getHost(a))))
   // Discover plays HLS (like the squad); other stream kinds open on their own page from /streams.
-  // It starts playing on its own, so streams marked with a content warning are left out unless you accepted them.
-  const grownUp = useContentWarning()
+  // 18+ streams (a content-warning tag or an 18+ sign in the title) are left out unless you opted in in settings.
+  // A left-out stream is never rendered, so its picture is never requested.
+  const showAdult = useShowAdult()
   const playable = useMemo(
-    () => live.filter(
+    () =>
+      live.filter(
         e =>
           squadStreamUrl(e) !== undefined &&
-          (grownUp || !findTag(e, "content-warning")) &&
+          (showAdult || !isAdultStream(e)) &&
           // your own stream is not something to discover
           getHost(e) !== login?.pubkey,
       ),
-    [live, grownUp, login?.pubkey],
+    [live, showAdult, login?.pubkey],
   )
   const lists = useFrenLists(follows, !!login)
 
@@ -182,6 +185,7 @@ export function DiscoverPage() {
   const [soundOn, setSoundOn] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
   const [post, setPost] = useState<TaggedNostrEvent>()
+  const [sharing, setSharing] = useState<TaggedNostrEvent>()
   const [toast, setToast] = useState<{ text: ReactNode; key: number }>()
   useEffect(() => {
     if (!toast) return
@@ -218,7 +222,9 @@ export function DiscoverPage() {
           <span className="text-layer-4">Looking for live streams...</span>
         ) : (
           <>
-            <span className="font-semibold">{tag ? `Nobody is live with #${tag} right now.` : "Nobody is live right now."}</span>
+            <span className="font-semibold">
+              {tag ? `Nobody is live with #${tag} right now.` : "Nobody is live right now."}
+            </span>
             {tag && (
               <button
                 type="button"
@@ -262,9 +268,15 @@ export function DiscoverPage() {
               ev={ev}
               chatOpen={chatOpen && i === index}
               onChat={() => setChatOpen(o => !o)}
-              squad={picks.includes(streamAddr(ev)) ? "on" : picks.filter(a => liveAddrs.has(a)).length >= SQUAD_CAP ? "full" : "add"}
+              squad={
+                picks.includes(streamAddr(ev))
+                  ? "on"
+                  : picks.filter(a => liveAddrs.has(a)).length >= SQUAD_CAP
+                    ? "full"
+                    : "add"
+              }
               onSquad={() => addSquad(ev)}
-              onShare={msg => say(msg)}
+              onShare={() => setSharing(ev)}
             />
           }
         />
@@ -278,7 +290,11 @@ export function DiscoverPage() {
         canWrite={true}
         showGoal={false}
         showHeader={true}
-        className="min-h-0 h-full border border-layer-3 bg-layer-1 rounded-2xl overflow-hidden"
+        className={
+          isDesktop
+            ? "min-h-0 h-full border border-layer-3 bg-layer-1 rounded-2xl overflow-hidden"
+            : "min-h-0 h-full overflow-hidden discover-glass-chat"
+        }
       />
     </StreamContextProvider>
   )
@@ -328,6 +344,7 @@ export function DiscoverPage() {
           </div>
           {toastEl}
         </div>
+        {sharing && <ShareSheet ev={sharing} onClose={() => setSharing(undefined)} onSay={say} />}
         <aside className="discover-side">
           {chatOpen && chat ? (
             <div className="flex flex-col gap-2 h-full min-h-0" data-testid="discover-chat">
@@ -349,20 +366,21 @@ export function DiscoverPage() {
   }
 
   return (
-    <div className="discover discover-phone" data-testid="discover">
+    <div className={classNames("discover discover-phone", chatOpen && "discover-chat-open")} data-testid="discover">
       <Helmet>
         <title>{`Discover - ${APP_NAME}`}</title>
       </Helmet>
       {slides}
       {chips_}
       {toastEl}
+      {sharing && <ShareSheet ev={sharing} onClose={() => setSharing(undefined)} onSay={say} />}
       {chatOpen && chat && (
-        <div className="discover-sheet" data-testid="discover-chat">
+        <div className="discover-sheet discover-glass" data-testid="discover-chat">
           <div className="flex items-center justify-between px-3 pt-2">
-            <span className="text-[13px] text-layer-4">The stream keeps playing above.</span>
+            <span className="text-[13px] text-text">The stream keeps playing behind the chat.</span>
             <button
               type="button"
-              className="grid place-items-center w-8 h-8 rounded-lg bg-layer-2"
+              className="grid place-items-center w-8 h-8 rounded-lg bg-black/40"
               onClick={() => setChatOpen(false)}
               aria-label="Close the chat"
             >
@@ -418,7 +436,9 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       className={classNames(
         "shrink-0 rounded-full border px-3 py-1 text-[13px] font-semibold backdrop-blur-sm",
-        active ? "border-primary text-primary bg-primary/10" : "border-layer-3 text-layer-5 bg-layer-0/60 hover:text-text",
+        active
+          ? "border-primary text-primary bg-primary/10"
+          : "border-layer-3 text-layer-5 bg-layer-0/60 hover:text-text",
       )}
     >
       {children}
@@ -432,11 +452,7 @@ function WhyLine({ why }: { why: Why }) {
   const b = useUserProfile(why.kind === "fof" ? why.via[1] : undefined)
   const names = why.kind === "fof" ? why.via.map((pk, i) => getName(pk, i === 0 ? a : b) ?? pk.slice(0, 8)) : []
   return (
-    <span
-      className={why.kind === "live" ? "text-layer-5" : "text-primary"}
-      data-testid="why-line"
-      data-why={why.kind}
-    >
+    <span className={why.kind === "live" ? "text-layer-5" : "text-primary"} data-testid="why-line" data-why={why.kind}>
       {whyText(why, names)}
     </span>
   )
@@ -607,21 +623,27 @@ function ActivePlayer({
 }
 
 function SideButton({
-  label,
+  icon,
   caption,
   tone,
   pressed,
   onClick,
-  title,
+  label,
   testid,
+  plus,
+  disabled,
 }: {
-  label: string
-  caption?: string
+  icon: ReactNode
+  caption: string
   tone?: "zap" | "primary"
   pressed?: boolean
   onClick?: () => void
-  title?: string
+  /** the aria-label (and tooltip) */
+  label: string
   testid?: string
+  /** the small "+" badge (Squad, while the stream is not on your squad) */
+  plus?: boolean
+  disabled?: boolean
 }) {
   const circle = (
     <span
@@ -630,21 +652,38 @@ function SideButton({
         tone === "zap" && "border-zap text-zap",
         tone === "primary" && "border-primary text-primary",
         pressed && "bg-primary/20",
+        disabled && "opacity-50",
       )}
     >
-      {label}
+      {icon}
+      {plus && (
+        <span className="discover-plus" data-testid="squad-plus">
+          <PixelIcon grid={PLUS_GRID} size={10} />
+        </span>
+      )}
     </span>
   )
   return (
     <div className="flex flex-col items-center gap-1">
-      {onClick ? (
-        <button type="button" onClick={onClick} aria-pressed={pressed} title={title} aria-label={title} data-testid={testid}>
+      {onClick && !disabled ? (
+        <button
+          type="button"
+          onClick={onClick}
+          aria-pressed={pressed}
+          title={label}
+          aria-label={label}
+          data-testid={testid}
+        >
           {circle}
         </button>
       ) : (
-        circle
+        <span role="img" aria-label={label} title={label} data-testid={testid}>
+          {circle}
+        </span>
       )}
-      {caption && <span className="text-[11px] font-semibold text-text drop-shadow">{caption}</span>}
+      <span className="discover-caption" aria-hidden="true">
+        {caption}
+      </span>
     </div>
   )
 }
@@ -662,28 +701,12 @@ function SideButtons({
   onChat: () => void
   squad: "add" | "on" | "full"
   onSquad: () => void
-  onShare: (msg: string) => void
+  onShare: () => void
 }) {
   const host = getHost(ev)
   const profile = useUserProfile(host)
-  const href = useStreamHref(ev, host)
   const zapTarget = profile?.lud16 ?? profile?.lud06
   const name = getName(host, profile)
-
-  async function share() {
-    const url = `${window.location.origin}${href}`
-    const title = extractStreamInfo(ev).title ?? `${name} is live`
-    try {
-      if (navigator.share) {
-        await navigator.share({ url, title })
-        return
-      }
-      await navigator.clipboard.writeText(url)
-      onShare(`Link copied: ${url}`)
-    } catch {
-      onShare(`Copy this link: ${url}`)
-    }
-  }
 
   return (
     <div className="discover-buttons" data-testid="discover-buttons">
@@ -695,41 +718,63 @@ function SideButtons({
             aTag={`${ev.kind}:${ev.pubkey}:${findTag(ev, "d")}`}
             targetName={name}
             label="Boost or zap the stream"
+            pickYourSats
             button={
-              <span className="discover-round border-zap text-zap" title="Boost or zap the stream">
-                ZAP
+              <span
+                className="discover-round border-zap text-zap"
+                title="Boost or zap the stream"
+                role="img"
+                aria-label={`Zap ${name}: boost or zap the stream`}
+                data-testid="discover-zap-button"
+              >
+                <PixelIcon grid={ZAP_GRID} />
               </span>
             }
           />
-          <span className="text-[11px] font-semibold text-text drop-shadow">Boost</span>
+          <span className="discover-caption" aria-hidden="true">
+            Zap
+          </span>
         </div>
       ) : (
-        <SideButton label="ZAP" caption="No address" title="This streamer has no lightning address on their profile" />
+        <SideButton
+          icon={<PixelIcon grid={ZAP_GRID} />}
+          caption="No address"
+          label="Zap: this streamer has no lightning address on their profile"
+          disabled
+          testid="discover-zap-button"
+        />
       )}
       <SideButton
-        label="CHAT"
-        caption={chatOpen ? "Open" : undefined}
+        icon={<PixelIcon grid={CHAT_GRID} />}
+        caption={chatOpen ? "Close" : "Chat"}
         pressed={chatOpen}
         onClick={onChat}
-        title={chatOpen ? "Close the chat" : `Open ${name}'s chat`}
+        label={chatOpen ? "Close the chat" : `Chat: open ${name}'s chat`}
         testid="discover-chat-button"
       />
       <SideButton
-        label="SQUAD"
+        icon={<PixelIcon grid={SQUAD_GRID} />}
         tone="primary"
-        caption={squad === "on" ? "On squad" : squad === "full" ? "Full" : "Add"}
+        caption={squad === "on" ? "On squad" : squad === "full" ? "Full" : "Squad"}
         pressed={squad === "on"}
+        plus={squad === "add"}
         onClick={onSquad}
-        title={
+        label={
           squad === "on"
-            ? "On your squad"
+            ? "Squad: on your squad"
             : squad === "full"
-              ? `Your squad is full (${SQUAD_CAP})`
-              : "Add to your squad in the Room"
+              ? `Squad: your squad is full (${SQUAD_CAP})`
+              : "Squad: add to your squad in the Room"
         }
         testid="discover-squad-button"
       />
-      <SideButton label="SHARE" onClick={share} title="Share this stream" testid="discover-share-button" />
+      <SideButton
+        icon={<PixelIcon grid={SHARE_GRID} />}
+        caption="Share"
+        onClick={onShare}
+        label="Share: repost to nostr or share somewhere else"
+        testid="discover-share-button"
+      />
     </div>
   )
 }
@@ -750,12 +795,10 @@ function SideFeed({
   const follows = useFollows()
   const [tab, setTab] = useState<FeedTab>()
   const fallback: FeedTab = login && follows.size > 0 ? { kind: "frens" } : { kind: "tag", tag: tag ?? "gaming" }
-  const active: FeedTab = tab && !(tab.kind === "tag" && tag && tab.tag !== tag) ? tab : tag ? { kind: "tag", tag } : fallback
+  const active: FeedTab =
+    tab && !(tab.kind === "tag" && tag && tab.tag !== tag) ? tab : tag ? { kind: "tag", tag } : fallback
   const { notes } = useRoomFeed(active, [...follows])
-  if (post)
-    return (
-      <OpenPost ev={post} pausedName={pausedName} onClose={() => onPost(undefined)} />
-    )
+  if (post) return <OpenPost ev={post} pausedName={pausedName} onClose={() => onPost(undefined)} />
   const tabs: Array<FeedTab> = [{ kind: "frens" }, { kind: "fof" }, { kind: "tag", tag: tag ?? "gaming" }]
   return (
     <section className="flex flex-col gap-3 min-h-0 h-full" aria-label="Feed" data-testid="discover-side-feed">

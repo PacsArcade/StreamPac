@@ -70,6 +70,7 @@ export function StreamInfo({ ev, goal }: { ev?: TaggedNostrEvent; goal?: TaggedN
             eTag={goal?.id}
             targetName={getName(ev.pubkey, profile)}
             label="Boost or zap the stream"
+            pickYourSats
           />
         )}
       </div>
@@ -123,6 +124,7 @@ export function StreamInfo({ ev, goal }: { ev?: TaggedNostrEvent; goal?: TaggedN
                     eTag={goal?.id}
                     targetName={getName(ev.pubkey, profile)}
                     label="Boost or zap the stream"
+                    pickYourSats
                   />
                 )}
               </>
