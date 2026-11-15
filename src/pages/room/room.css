@@ -43,6 +43,18 @@
   grid-row: 1 / -1;
 }
 
+/* A phone with 4 picks: a 2 x 2 grid, so no tile is too small for its LIVE tag and name. */
+@media (max-width: 1279px) {
+  .room-squad-4 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    aspect-ratio: 16 / 10;
+  }
+  .room-squad-4 > .row-span-full {
+    grid-row: auto;
+  }
+}
+
 /*
  * The bar under the squad. Its padding clears the 12 px notch on every corner (pa-notch steps are 6 and 12 px),
  * so no text or button sits in a cut corner. On a phone the actions are the bottom item and sit centred.

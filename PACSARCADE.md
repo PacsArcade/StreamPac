@@ -28,6 +28,16 @@ Third pass, the Room (step 1 of the round 3 design, block 975,992). `/` is now t
 - The dark strip down the left of every phone page was the closed side menu (219 px wide, slid out only 200 px). `Flyout` now slides by its own width and hides when closed.
 - Slot for step 3 (dock and buddy): `.room-dock-slot` in the Room, empty.
 
+Fourth pass, Discover (step 2 of the round 3 design, block 975,999). `/discover` (`src/pages/discover/`), a "Discover" row in the left nav and the phone menu (the same list).
+- One live stream at a time. Phone: it fills the page under the mini time banner; swipe up for the next, down for the one before (CSS scroll snap). Desktop: one tall 3:4 column in the middle, the step 1 left rail (BFT clock) on the left, the Room's feed on the right; scroll, the arrow keys (or Page Up/Down) and the up/down buttons move through it. A wide stream is never cropped: it sits whole in the column over a blur of its own picture.
+- Only the stream on screen has a player (one plays at a time). It starts muted; "Tap for sound" turns it on, and the sound stays on for the next ones until you tap again. If the browser refuses sound it plays muted and keeps saying "Tap for sound".
+- Why it is shown (`whyShown` in `discover-state.ts`): "you follow them"; or "satsuma and node_nana follow them" from the newest follow lists (kind 3) of the people you follow; or the picked tag when the stream carries it; otherwise "live now". No login: never fren names. The host comes from `getHost`, so a stream cannot borrow a host you follow.
+- Order: your frens, then the most frens following, then most watched. What you have swiped past and the stream on screen never move when new data arrives (`mergeOrder`).
+- Tag chips: #gaming #bitcoin #music #art, then up to 6 tags live streams really carry, most used first. `?tag=` in the URL.
+- Side buttons: Zap (the same zap flow as "Boost or zap the stream"), Chat (that stream's chat with the lightning tab; a sheet on a phone, the right column on desktop), Squad, Share (system share, else copy the link).
+- Squad: Add puts the stream into the Room's squad (`src/pages/room/squad-store.ts`, kept on this device under `pa-squad`, by stream address `30311:author:d` because the event id changes on every update). Up to 4; a 5th says the squad is full and changes nothing. Ended streams do not hold a seat. The Room shows your picks first; a phone shows all 4 when you picked 4 (2 x 2).
+- Left out of Discover: non-HLS streams (they play on their own page), streams with a content warning unless you accepted them, your own stream.
+
 Still not done: NIP-05 domain default (still `zap.stream`, set `VITE_NIP5_DOMAIN` when we serve our own `/.well-known/nostr.json`), a real contact address and Twitter handle, other locale files still carry old zap.stream strings (en is regenerated).
 
 ## Build

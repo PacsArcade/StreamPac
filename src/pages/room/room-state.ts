@@ -53,7 +53,11 @@ export function pickSquad(
       return true
     })
   const byWatching = [...playable].sort((a, b) => watching(b) - watching(a))
-  const chosen = pinned.map(id => playable.find(e => e.id === id)).filter((e): e is NostrEvent => !!e)
+  // a pick is an event id or a stream address (kind:author:d), which outlives the replaceable event's id
+  const addrOf = (e: NostrEvent) => `${e.kind}:${e.pubkey}:${e.tags.find(t => t[0] === "d")?.[1] ?? ""}`
+  const chosen = pinned
+    .map(id => playable.find(e => e.id === id || addrOf(e) === id))
+    .filter((e): e is NostrEvent => !!e)
   const frens = byWatching.filter(e => follows.has(hostOf(e)))
   if (frens.length > 0) {
     return { events: uniq([...chosen, ...frens]).slice(0, max), frens: true }

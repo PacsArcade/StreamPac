@@ -1,0 +1,234 @@
+/*
+ * Discover: one live stream at a time, swipe (or scroll, or arrow keys) for the next.
+ * Phone: the stream fills the page under the header and the mini time banner (28 px).
+ * Desktop (1280 and up): one tall column in the middle, the Room's feed on the right.
+ */
+.discover-phone {
+  position: relative;
+  height: calc(100dvh - var(--header-height) - 28px);
+  overflow: hidden;
+}
+.discover-scroller {
+  height: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+  outline: none;
+}
+.discover-slide {
+  position: relative;
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.discover-card {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+}
+/* The stream's own picture, blurred, fills the space a wide stream leaves; the stream itself is never cropped. */
+.discover-backdrop {
+  position: absolute;
+  inset: -24px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(22px) brightness(0.45) saturate(1.2);
+}
+.discover-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.discover-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 46%;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.85), transparent);
+  pointer-events: none;
+}
+.discover-info {
+  position: absolute;
+  left: 16px;
+  right: 76px;
+  bottom: 16px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+  min-width: 0;
+}
+.discover-sound {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 56px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgb(10 9 7 / 0.75);
+  font-size: 12px;
+  font-weight: 700;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.discover-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.discover-card > .discover-buttons {
+  position: absolute;
+  right: 12px;
+  bottom: 96px;
+  z-index: 3;
+}
+.discover-round {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-layer-3, #2e2340);
+  background: rgb(10 9 7 / 0.72);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--color-text, #f2ede6);
+  backdrop-filter: blur(4px);
+}
+.discover-round:hover {
+  filter: brightness(1.2);
+}
+.discover-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  min-width: 0;
+}
+.discover-phone > .discover-chips {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  right: 0;
+  padding-right: 16px;
+  z-index: 4;
+}
+.discover-toast {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--color-primary, #00ffff);
+  background: rgb(10 9 7 / 0.94);
+  font-size: 13.5px;
+  line-height: 1.4;
+  text-align: center;
+}
+.discover-phone > .discover-toast {
+  bottom: auto;
+  top: 56px;
+}
+/* Phone chat: a sheet over the lower part; the stream keeps playing above it. */
+.discover-sheet {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 68%;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--color-layer-0, #0a0907);
+  border-top: 1px solid var(--color-layer-3, #2e2340);
+  border-radius: 16px 16px 0 0;
+}
+
+@media (min-width: 1280px) {
+  .discover-desktop {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 24px;
+    padding: 20px 24px;
+    height: calc(100dvh - var(--header-height));
+  }
+  .discover-middle {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+    min-width: 0;
+  }
+  .discover-stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+  }
+  .discover-desktop .discover-slide {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 18px;
+    padding-bottom: 12px;
+  }
+  /* the tall column: full height, 3:4, never wider than the space */
+  .discover-desktop .discover-card {
+    position: relative;
+    inset: auto;
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    max-width: calc(100% - 150px);
+  }
+  .discover-desktop .discover-info {
+    right: 16px;
+  }
+  .discover-desktop .discover-slide > .discover-buttons {
+    align-self: flex-end;
+    padding-bottom: 20px;
+  }
+  .discover-steps {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .discover-steps button {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--color-layer-3, #2e2340);
+    background: var(--color-layer-1, #130e1c);
+  }
+  .discover-steps button:disabled {
+    opacity: 0.35;
+  }
+  .discover-side {
+    min-height: 0;
+    height: 100%;
+  }
+  /* under the chips, clear of the title and the why line */
+  .discover-desktop .discover-toast {
+    bottom: auto;
+    top: 62px;
+  }
+}

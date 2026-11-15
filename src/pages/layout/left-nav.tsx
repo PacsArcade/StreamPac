@@ -36,6 +36,9 @@ export function LeftNav() {
           <NavLinkIcon name="widget" route="/room" onClick={hideAfterMobileNav}>
             Room
           </NavLinkIcon>
+          <NavLinkIcon name="compass" route="/discover" onClick={hideAfterMobileNav}>
+            Discover
+          </NavLinkIcon>
           <NavLinkIcon name="signal" route="/streams" onClick={hideAfterMobileNav}>
             <FormattedMessage defaultMessage="Streams" />
           </NavLinkIcon>
