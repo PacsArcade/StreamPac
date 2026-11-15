@@ -69,6 +69,7 @@ export function StreamInfo({ ev, goal }: { ev?: TaggedNostrEvent; goal?: TaggedN
             aTag={`${ev.kind}:${ev.pubkey}:${findTag(ev, "d")}`}
             eTag={goal?.id}
             targetName={getName(ev.pubkey, profile)}
+            label="Boost or zap the stream"
           />
         )}
       </div>
@@ -81,8 +82,8 @@ export function StreamInfo({ ev, goal }: { ev?: TaggedNostrEvent; goal?: TaggedN
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-x-4 gap-y-1 flex-wrap text-sm text-layer-4">
           {isLive ? (
-            <span className="inline-flex items-center gap-2 font-semibold text-text">
-              <span className="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_0_4px_rgb(255_176_0/0.22)]" />
+            <span className="inline-flex items-center gap-2 font-semibold text-live">
+              <span className="pa-live-dot" />
               <FormattedMessage defaultMessage="Live now" />
             </span>
           ) : (
@@ -121,6 +122,7 @@ export function StreamInfo({ ev, goal }: { ev?: TaggedNostrEvent; goal?: TaggedN
                     aTag={`${ev.kind}:${ev.pubkey}:${findTag(ev, "d")}`}
                     eTag={goal?.id}
                     targetName={getName(ev.pubkey, profile)}
+                    label="Boost or zap the stream"
                   />
                 )}
               </>

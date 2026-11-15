@@ -19,10 +19,11 @@ export default function Flyout({
   const styles = {
     "--flyout-w": "200px",
     transition: "all 0.2s ease-in-out",
-    transform:
-      side === "right"
-        ? `translate(${show ? "0" : "var(--flyout-w)"},0)`
-        : `translate(${show ? "0" : "calc(-1 * var(--flyout-w))"},0)`,
+    // translate by the panel's OWN width (100%), not --flyout-w: the panel is wider than 200px once padded,
+    // so a fixed 200px left its edge showing as a dark strip down the left of every phone page.
+    transform: side === "right" ? `translate(${show ? "0" : "100%"},0)` : `translate(${show ? "0" : "-100%"},0)`,
+    visibility: show ? "visible" : "hidden",
+    transitionProperty: "transform, visibility",
   } as CSSProperties
 
   if (!hydrated) return null

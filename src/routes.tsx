@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react"
 import { RootPage } from "@/pages/root"
+import { RoomPage } from "@/pages/room"
 import { TagPage } from "@/pages/tag"
 import { LayoutPage } from "@/pages/layout"
 import { ProfilePage } from "@/pages/profile-page"
@@ -58,7 +59,11 @@ export function makeRoutes(init: () => Promise<null>): RouteObject[] {
       },
       {
         path: "/",
-        element: <RootPage />,
+        element: <RoomPage />,
+      },
+      {
+        path: "/room",
+        element: <RoomPage />,
       },
       {
         path: "/streams",

@@ -29,6 +29,8 @@ import { useLegacyChatFeed } from "@/hooks/legacy-chat"
 import type { ExternalChatEvent } from "@/service/chat/types"
 import { YoutubeChatMessage } from "./youtube"
 import { KickChatMessage } from "./kick"
+import { BoostTab } from "./boost-tab"
+import { boostTier, pinnedBoost } from "./boost"
 
 function BadgeAward({ ev }: { ev: NostrEvent }) {
   const badge = findTag(ev, "a") ?? ""
@@ -98,6 +100,17 @@ export function LiveChat({
   }, [userEmojiPacks, channelEmojiPacks])
 
   const reactions = useEventReactions(link, feed)
+  const hostProfile = useUserProfile(host)
+  const zapTarget = hostProfile?.lud16 ?? hostProfile?.lud06
+  const streamATag = event ? `${event.kind}:${event.pubkey}:${findTag(event, "d")}` : undefined
+  const pinned = useMemo(
+    () =>
+      pinnedBoost(
+        reactions.zaps.filter(z => z.valid && z.receiver === host),
+        unixNow(),
+      ),
+    [reactions.zaps, host],
+  )
   const legacyChat = useLegacyChatFeed({ enable: host === login?.pubkey })
   const events = useMemo(() => {
     const extra = []
@@ -165,7 +178,10 @@ export function LiveChat({
   }, [events, login?.state?.version, hostMutedPubkeys])
 
   return (
-    <div className={classNames("flex flex-col gap-1", className)} style={height ? { height: `${height}px` } : {}}>
+    <div
+      className={classNames("relative flex flex-col gap-1", className)}
+      style={height ? { height: `${height}px` } : {}}
+    >
       {adjustLayout && (
         <button
           type="button"
@@ -190,7 +206,9 @@ export function LiveChat({
         </h2>
       )}
       {(showTopZappers ?? true) && reactions.zaps.length > 0 && (
-        <div className={classNames("flex shrink-0 gap-1.5 overflow-x-auto scrollbar-hidden", { "px-4 pb-1": showHeader })}>
+        <div
+          className={classNames("flex shrink-0 gap-1.5 overflow-x-auto scrollbar-hidden", { "px-4 pb-1": showHeader })}
+        >
           <TopZappers
             zaps={reactions.zaps}
             avatarSize={20}
@@ -203,10 +221,20 @@ export function LiveChat({
           <Goal ev={goal} />
         </div>
       )}
+      {pinned && (
+        <div
+          className={classNames("shrink-0", { "px-4 pr-8": showHeader, "pr-7": !showHeader })}
+          data-testid="pinned-boost"
+        >
+          <ChatZap zap={pinned} pinned={true} />
+        </div>
+      )}
       <div
         className={classNames("flex flex-col-reverse grow gap-2.5 overflow-y-auto min-h-0", {
           "scrollbar-hidden": !(showScrollbar ?? true),
           "px-4 py-2 border-t border-layer-3": showHeader,
+          "pr-8": (canWrite ?? true) && showHeader,
+          "pr-7": (canWrite ?? true) && !showHeader,
         })}
       >
         {filteredEvents.map((a, i) => {
@@ -321,6 +349,14 @@ export function LiveChat({
         })}
         {feed.length === 0 && <Spinner />}
       </div>
+      {(canWrite ?? true) && event && (
+        <BoostTab
+          lnurl={zapTarget}
+          pubkey={host}
+          aTag={streamATag}
+          targetName={hostProfile?.name ?? hostProfile?.display_name}
+        />
+      )}
       {(canWrite ?? true) && (
         <div className={classNames("flex gap-2 border-t border-layer-3 py-3", { "px-4": showHeader })}>
           {login ? (
@@ -338,19 +374,25 @@ export function LiveChat({
 
 const BIG_ZAP_THRESHOLD = 50_000
 
-export function ChatZap({ zap }: { zap: ParsedZap }) {
+export function ChatZap({ zap, pinned }: { zap: ParsedZap; pinned?: boolean }) {
   if (!zap.valid) {
     return null
   }
   const isBig = zap.amount >= BIG_ZAP_THRESHOLD
+  // a boosted message: the tier comes from the real receipt's amount (see ./boost.ts)
+  const tier = boostTier(zap.amount, zap.content)
 
   return (
     <div
       className={classNames(
         "overflow-wrap rounded-xl border px-3 py-2",
         isBig ? "border-primary bg-primary/15" : "border-primary/30 bg-primary/5",
+        tier === "glow" && "border-zap shadow-[0_0_14px_2px_rgb(255_215_0/0.45)]",
+        tier === "pin" && "border-zap/70",
       )}
+      data-boost={tier}
     >
+      {pinned && <div className="text-[11px] font-bold uppercase tracking-wider text-zap mb-1">Pinned boost</div>}
       <div className="flex gap-2 items-center justify-between">
         <Profile
           pubkey={zap.anonZap ? "anon" : (zap.sender ?? "")}
@@ -365,7 +407,7 @@ export function ChatZap({ zap }: { zap: ParsedZap }) {
         </span>
       </div>
       {zap.content && (
-        <div className="text-sm text-layer-5 mt-1">
+        <div className={classNames("text-sm mt-1", tier ? "font-bold text-text" : "text-layer-5")}>
           <Text content={zap.content} tags={[]} />
         </div>
       )}

@@ -10,7 +10,11 @@ export function StatePill({ state, ...props }: StatePillProps) {
   return (
     <Pill
       {...props}
-      className={classNames("uppercase", state === StreamState.Live ? "bg-primary" : "bg-layer-1", props.className)}
+      className={classNames(
+        "uppercase",
+        state === StreamState.Live ? "bg-live text-black" : "bg-layer-1",
+        props.className,
+      )}
     >
       {state}
     </Pill>

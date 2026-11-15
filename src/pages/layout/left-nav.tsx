@@ -14,6 +14,7 @@ import { Avatar } from "@/element/avatar"
 import { getName } from "@/element/profile"
 import type { NostrEvent } from "@snort/system"
 import { useStreamHref } from "@/hooks/short-link"
+import { BftClock } from "@/element/bft-clock"
 
 export function LeftNav() {
   const layout = useLayout()
@@ -32,6 +33,9 @@ export function LeftNav() {
     return (
       <div className="flex flex-col gap-7">
         <nav className="flex flex-col gap-0.5">
+          <NavLinkIcon name="widget" route="/room" onClick={hideAfterMobileNav}>
+            Room
+          </NavLinkIcon>
           <NavLinkIcon name="signal" route="/streams" onClick={hideAfterMobileNav}>
             <FormattedMessage defaultMessage="Streams" />
           </NavLinkIcon>
@@ -46,8 +50,13 @@ export function LeftNav() {
           </NavLinkIcon>
         </nav>
         <FollowingLive onNavigate={hideAfterMobileNav} />
+        {isDesktop && <BftClock />}
         <p className="px-2.5 text-xs text-layer-4">
-          Built on <a className="underline" href={UPSTREAM_URL} target="_blank" rel="noreferrer">{UPSTREAM_NAME}</a> by v0l (MIT).
+          Built on{" "}
+          <a className="underline" href={UPSTREAM_URL} target="_blank" rel="noreferrer">
+            {UPSTREAM_NAME}
+          </a>{" "}
+          by v0l (MIT).
         </p>
       </div>
     )
@@ -86,9 +95,7 @@ function FollowingLive({ onNavigate }: { onNavigate: () => void }) {
   if (!login || following.length === 0) return
   return (
     <section className="flex flex-col gap-0.5">
-      <h2 className="font-sans text-sm font-semibold text-layer-4 px-2.5 pb-1.5 tracking-normal">
-        <FormattedMessage defaultMessage="Following" id="cPIKU2" />
-      </h2>
+      <h2 className="font-sans text-sm font-semibold text-layer-4 px-2.5 pb-1.5 tracking-normal">Frens live now</h2>
       {following.slice(0, 10).map(a => (
         <FollowingRow key={a.id} ev={a} onNavigate={onNavigate} />
       ))}
@@ -110,7 +117,7 @@ function FollowingRow({ ev, onNavigate }: { ev: NostrEvent; onNavigate: () => vo
     >
       <Avatar pubkey={host} user={profile} size={28} />
       <span className="flex-1 truncate text-[15px]">{getName(host, profile)}</span>
-      <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
+      <span className="pa-live-dot" title="Live" />
     </Link>
   )
 }

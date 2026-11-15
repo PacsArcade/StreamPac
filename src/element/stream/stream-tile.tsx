@@ -84,8 +84,8 @@ export function StreamTile({
           )}
           <span className="absolute inset-x-2.5 top-2.5 flex justify-between items-start gap-2">
             {showStatus && (isLive || participants) ? (
-              <TileBadge>
-                {isLive && <span className="w-[7px] h-[7px] rounded-full bg-primary" />}
+              <TileBadge className={isLive ? "text-live" : undefined}>
+                {isLive && <span className="pa-live-dot" />}
                 {participants ? (
                   <FormattedMessage defaultMessage="{n} watching" values={{ n: formatSats(Number(participants)) }} />
                 ) : (

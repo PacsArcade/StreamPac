@@ -28,6 +28,12 @@ export interface LNURLLike {
 }
 
 export interface SendZapsProps {
+  /** text on the default button; "Zap" when not given */
+  label?: ReactNode
+  /** start on this amount in sats (custom if it is not one of the buttons) */
+  presetAmount?: number
+  /** start with this comment, e.g. a boosted chat message */
+  presetComment?: string
   lnurl: string | LNURLLike
   pubkey?: string
   aTag?: string
@@ -38,16 +44,26 @@ export interface SendZapsProps {
   button?: ReactNode
 }
 
-export function SendZaps({ lnurl, pubkey, aTag, eTag, targetName, onFinish, onTargetReady }: SendZapsProps) {
+export function SendZaps({
+  lnurl,
+  pubkey,
+  aTag,
+  eTag,
+  targetName,
+  onFinish,
+  onTargetReady,
+  presetAmount,
+  presetComment,
+}: SendZapsProps) {
   const satsAmounts = [
     21, 69, 121, 420, 1_000, 2_100, 4_200, 10_000, 21_000, 42_000, 69_000, 100_000, 210_000, 500_000, 1_000_000,
   ]
   const usdAmounts = [0.05, 0.5, 2, 5, 10, 50, 100, 200]
   const [isFiat, setIsFiat] = useState(false)
   const [svc, setSvc] = useState<LNURLLike>()
-  const [customAmount, setCustomAmount] = useState(false)
-  const [amount, setAmount] = useState(satsAmounts[0])
-  const [comment, setComment] = useState("")
+  const [customAmount, setCustomAmount] = useState(presetAmount !== undefined && !satsAmounts.includes(presetAmount))
+  const [amount, setAmount] = useState(presetAmount ?? satsAmounts[0])
+  const [comment, setComment] = useState(presetComment ?? "")
   const [invoice, setInvoice] = useState("")
   const [invoiceWarning, setInvoiceWarning] = useState<ReactNode>()
   const login = useLogin()
@@ -251,7 +267,7 @@ export function SendZapsDialog(props: Omit<SendZapsProps, "onFinish">) {
       ) : (
         <PrimaryButton onClick={() => setOpen(true)}>
           <Icon name="zap-filled" size={16} />
-          <FormattedMessage defaultMessage="Zap" />
+          {props.label ?? <FormattedMessage defaultMessage="Zap" />}
         </PrimaryButton>
       )}
       {open && (

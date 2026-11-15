@@ -100,7 +100,7 @@ function ProfileHero({
           {liveEvent && (
             <Link
               to={`/${NostrLink.fromEvent(liveEvent).encode()}`}
-              className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-md bg-primary px-2 py-0.5 text-sm font-bold"
+              className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-md bg-live text-black px-2 py-0.5 text-sm font-bold"
             >
               <FormattedMessage defaultMessage="Live" id="Dn82AL" />
             </Link>
@@ -198,8 +198,8 @@ function LiveNow({ ev }: { ev: TaggedNostrEvent }) {
         )}
       </div>
       <div className="flex flex-col gap-1 min-w-0 flex-1">
-        <span className="inline-flex items-center gap-2 text-sm font-semibold">
-          <span className="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_0_4px_rgb(255_176_0/0.22)]" />
+        <span className="inline-flex items-center gap-2 text-sm font-semibold text-live">
+          <span className="pa-live-dot" />
           <FormattedMessage defaultMessage="Live now" />
         </span>
         <h2 className="text-2xl line-clamp-2">{title}</h2>

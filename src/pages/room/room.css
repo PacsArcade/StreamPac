@@ -1,0 +1,106 @@
+/* The Room: squad of frens' streams beside the feed. Desktop grid at 1280 and up, one column below. */
+.room {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 24px;
+}
+.room-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  min-height: 0;
+}
+.room-side {
+  min-width: 0;
+  min-height: 0;
+  padding: 0 12px;
+}
+
+/* Squad: one big tile with the sound on the left, the rest stacked on the right (round 3 boards A and C). */
+.room-squad {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 2fr 1fr;
+  aspect-ratio: 2 / 1;
+  margin: 0 12px;
+}
+.room-squad-1 {
+  grid-template-columns: 1fr;
+  aspect-ratio: 16 / 9;
+}
+.room-squad-2 {
+  grid-template-rows: 1fr;
+}
+.room-squad-3 {
+  grid-template-rows: 1fr 1fr;
+}
+.room-squad-4 {
+  grid-template-rows: 1fr 1fr 1fr;
+}
+.room-squad > .row-span-full {
+  grid-row: 1 / -1;
+}
+
+/*
+ * The bar under the squad. Its padding clears the 12 px notch on every corner (pa-notch steps are 6 and 12 px),
+ * so no text or button sits in a cut corner. On a phone the actions are the bottom item and sit centred.
+ */
+.room-now {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  margin: 0 12px;
+}
+.room-now-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Slot for step 3 (the dock: music or podcast player, and the buddy). Takes no room until it is built. */
+.room-dock-slot {
+  height: 0;
+}
+
+@media (min-width: 1280px) {
+  .room {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 24px;
+    padding: 20px 24px;
+    height: calc(100dvh - var(--header-height));
+  }
+  .room-main {
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .room-squad {
+    aspect-ratio: 2 / 1;
+    max-height: 64dvh;
+    margin: 0;
+    flex: none;
+  }
+  .room-squad-1 {
+    aspect-ratio: 16 / 9;
+    max-height: 62dvh;
+  }
+  .room-now {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 14px 18px;
+  }
+  .room-now-actions {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+  }
+  .room-side {
+    padding: 0;
+    height: 100%;
+  }
+}
