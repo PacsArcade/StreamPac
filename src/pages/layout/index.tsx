@@ -12,12 +12,18 @@ import { LeftNav } from "./left-nav"
 import { SnortContext, TraceTimelineOverlay } from "@snort/system-react"
 import { EventKind } from "@snort/system"
 import { USER_CARDS } from "@/const"
+import { useMediaQuery } from "usehooks-ts"
+import { BftMiniBanner } from "@/element/bft-clock"
+import { useLayout } from "./context"
 
 export function LayoutPage() {
   const location = useLocation()
   const login = useLogin()
   const system = useContext(SnortContext)
   const [trace, setTrace] = useState(false)
+  const layout = useLayout()
+  // below the desktop rail (which carries the full clock) the top switches to the mini time banner
+  const isDesktop = useMediaQuery("(min-width: 1280px)", { initializeWithValue: false })
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
@@ -66,6 +72,7 @@ export function LayoutPage() {
       </Helmet>
 
       <HeaderNav />
+      {!isDesktop && layout.showHeader && <BftMiniBanner className="sticky top-[var(--header-height)] z-10" />}
       <div className="flex flex-1 overflow-x-clip">
         <LeftNav />
         <main className="flex-1 min-w-0">

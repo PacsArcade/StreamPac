@@ -60,8 +60,8 @@ export function FeaturedStream({ ev, zaps, total }: { ev: TaggedNostrEvent; zaps
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-layer-0/95 via-layer-0/30 to-transparent" />
         <div className="absolute inset-x-5 bottom-4 sm:inset-x-7 sm:bottom-6 flex items-end justify-between gap-4">
           <div className="min-w-0">
-            <span className="inline-flex items-center gap-2 text-sm font-semibold">
-              <span className="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_0_4px_rgb(255_176_0/0.22)]" />
+            <span className="inline-flex items-center gap-2 text-sm font-semibold text-live">
+              <span className="pa-live-dot" />
               <FormattedMessage defaultMessage="Live now" />
             </span>
             <h1 className="text-[clamp(26px,3.6vw,52px)] leading-[1.02] my-2 max-w-[20ch] line-clamp-3 [text-shadow:0_2px_24px_rgb(0_0_0/0.5)]">
