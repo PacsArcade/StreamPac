@@ -7,7 +7,7 @@ import classNames from "classnames"
 
 import { Login, LoginType } from "@/login"
 import { Icon } from "./icon"
-import Logo from "./logo"
+import PlanetLogo from "./planet-logo"
 import Copy from "./copy"
 import { type AccountResponse, NostrStreamProvider, adaptPublisher } from "@/providers"
 import { IconButton, PrimaryButton } from "./buttons"
@@ -240,8 +240,8 @@ export function LoginSignup({ close }: { close: () => void }) {
       return (
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center text-center gap-3 pt-2">
-            <span className="flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/15 text-primary">
-              <Logo width={30} />
+            <span className="flex items-center justify-center">
+              <PlanetLogo height={48} />
             </span>
             <h2>
               <FormattedMessage defaultMessage="Welcome to {name}" values={{ name: APP_NAME }} />
