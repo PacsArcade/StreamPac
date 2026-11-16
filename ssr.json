@@ -1,7 +1,7 @@
 {
   "site_name": "Pac's Arcade Stream",
   "description": "Nostr live streaming powered by Bitcoin lightning. Stream freely with Bitcoin payments, no censorship, open source.",
-  "default_image": "/pacsarcade-logo-512.png",
+  "default_image": "/pacsarcade-planet-512.png",
   "public_url": "https://pacsarcade.stream",
   "relays": [
     "wss://relay.zap.stream",

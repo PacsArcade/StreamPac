@@ -15,6 +15,8 @@ import type { NostrEvent } from "@snort/system"
 import { useStreamHref } from "@/hooks/short-link"
 import { BftClock } from "@/element/bft-clock"
 import { useShowAdult, withoutAdult } from "@/element/nsfw/adult"
+import PlanetLogo from "@/element/planet-logo"
+import { APP_NAME } from "@/brand"
 
 export function LeftNav() {
   const layout = useLayout()
@@ -32,6 +34,18 @@ export function LeftNav() {
   function navInner() {
     return (
       <div className="flex flex-col gap-7">
+        {!isDesktop && (
+          <Link
+            to="/"
+            onClick={hideAfterMobileNav}
+            className="flex items-center gap-2.5 px-2.5 -mt-2"
+            aria-label={APP_NAME}
+            data-testid="menu-logo"
+          >
+            <PlanetLogo height={40} />
+            <span className="font-display text-lg font-extrabold tracking-tight leading-tight">{APP_NAME}</span>
+          </Link>
+        )}
         <nav className="flex flex-col gap-0.5">
           <NavLinkIcon name="widget" route="/room" onClick={hideAfterMobileNav}>
             Room
@@ -54,6 +68,11 @@ export function LeftNav() {
         </nav>
         <FollowingLive onNavigate={hideAfterMobileNav} />
         {isDesktop && <BftClock />}
+        {isDesktop && (
+          <Link to="/" className="flex px-2.5 pt-2" aria-label={APP_NAME} data-testid="rail-logo">
+            <PlanetLogo height={56} />
+          </Link>
+        )}
       </div>
     )
   }

@@ -65,7 +65,7 @@ async function showPush(e: PushEvent) {
   }
   if (!data) return
 
-  const icon = data.avatar ?? `${location.protocol}//${location.hostname}/pacsarcade-logo-256.png`
+  const icon = data.avatar ?? `${location.protocol}//${location.hostname}/pacsarcade-planet-256.png`
   if (data?.type === NotificationType.StreamStarted) {
     const ret = {
       icon,

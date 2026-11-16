@@ -3,12 +3,12 @@
   "name": "Pac's Arcade Stream",
   "icons": [
     {
-      "src": "pacsarcade-logo-512.png",
+      "src": "pacsarcade-planet-512.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "pacsarcade-logo-256.png",
+      "src": "pacsarcade-planet-256.png",
       "type": "image/png",
       "sizes": "256x256"
     }

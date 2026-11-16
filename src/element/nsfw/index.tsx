@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 
 import { Layer1Button, WarningButton } from "@/element/buttons"
-import Logo from "@/element/logo"
+import PlanetLogo from "@/element/planet-logo"
 import { NSFWStore } from "./store"
 import { useContentWarning } from "./hook.tsx"
 
@@ -17,7 +17,7 @@ export function ContentWarningOverlay() {
 
   return (
     <div className="z-10 bg-layer-0 w-screen h-screen absolute top-0 left-0 flex flex-col gap-4 justify-center items-center">
-      <Logo width={50} />
+      <PlanetLogo height={48} />
       <h1>
         <FormattedMessage defaultMessage="Sexually explicit material ahead!" />
       </h1>

@@ -2,7 +2,7 @@ import { APP_NAME } from "@/brand"
 import { BorderButton, IconButton, PrimaryButton } from "@/element/buttons"
 import { Icon } from "@/element/icon"
 import { LoginSignup } from "@/element/login-signup"
-import Logo from "@/element/logo"
+import PlanetLogo from "@/element/planet-logo"
 import Modal from "@/element/modal"
 import { AllLocales } from "@/intl"
 import { Login } from "@/login"
@@ -166,11 +166,9 @@ export function HeaderNav() {
             }}
           />
         )}
-        <Link to="/" className="flex items-center gap-2 text-primary">
-          <Logo width={30} />
-          <span className="font-display text-xl font-extrabold tracking-tight text-text max-md:hidden">
-            {APP_NAME}
-          </span>
+        <Link to="/" className="flex items-center gap-2 text-primary" aria-label={APP_NAME}>
+          <PlanetLogo height={40} />
+          <span className="font-display text-xl font-extrabold tracking-tight text-text max-md:hidden">{APP_NAME}</span>
         </Link>
       </div>
       <SearchBar />
