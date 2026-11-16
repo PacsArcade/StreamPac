@@ -66,7 +66,7 @@ jobs:
           name: app-build
           path: build
 
-      # docker.yml only builds Dockerfile.ssr; the prebuilt image is built by
+      # No other workflow builds Dockerfile.prebuilt; the image is built by
       # hand, so a parse/config error there ships unnoticed (this would have
       # caught e.g. a trailing comment after FROM, which Dockerfiles reject).
       # Built with podman (house rule: podman, not docker), from the real
