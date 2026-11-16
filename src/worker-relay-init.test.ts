@@ -3,7 +3,7 @@ import { expect, mock, test } from "bun:test"
 mock.module("@sqlite.org/sqlite-wasm", () => ({ default: async () => ({}) }))
 
 test("a worker relay command sent before init waits for it", async () => {
-  const { RelayOwner } = await import("@snort/worker-relay/src/relay-owner")
+  const { RelayOwner } = await import("@snort/worker-relay/dist/relay-owner.js")
   const relay = { init: async () => {}, close: () => {} }
   const owner = new RelayOwner({
     execute: async () => ["cached"],
